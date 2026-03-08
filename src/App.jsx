@@ -4179,8 +4179,8 @@ export default function DutchVerbApp() {
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-stone-200 dark:border-gray-700 p-8 shadow-lg">
           
           {practiceMode === 'participle' ? (
-            /* PARTICIPLE MODE - Learn past participles and auxiliary verbs */
             <div>
+              {/* PARTICIPLE MODE - Learn past participles and auxiliary verbs */}
               <div className="text-center mb-8">
                 <div className="inline-block px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-2xl mb-4">
                   <h3 className="text-lg font-bold">Past Participle Practice</h3>
@@ -4379,8 +4379,8 @@ export default function DutchVerbApp() {
               )}
             </div>
           ) : practiceMode === 'table' ? (
-            /* TABLE MODE - Fill complete conjugation */
             <div>
+              {/* TABLE MODE - Fill complete conjugation */}
               <div className="text-center mb-8">
                 <h2 className="text-4xl font-bold text-stone-800 mb-2 font-serif">{currentExercise.verb}</h2>
                 {getEnglishTranslation(currentExercise.verb) && (
@@ -4517,8 +4517,8 @@ export default function DutchVerbApp() {
               )}
             </div>
           ) : (
-          /* SINGLE QUESTION MODE */
           <>
+          {/* SINGLE QUESTION MODE */}
           {/* Exercise Header with Color-Coded Tense */}
           <div className="text-center mb-8">
             {/* Large Tense Badge */}
