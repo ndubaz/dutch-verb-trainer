@@ -1429,17 +1429,40 @@ export default function DutchVerbApp() {
   const [darkMode, setDarkMode] = useState(() => {
     // Check localStorage for saved preference, default to false
     const saved = localStorage.getItem('darkMode');
-    return saved === 'true';
+    const isDark = saved === 'true';
+    
+    // Apply immediately on initialization
+    if (typeof window !== 'undefined') {
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+    
+    return isDark;
   });
 
   // Save dark mode preference to localStorage when it changes
   useEffect(() => {
     localStorage.setItem('darkMode', darkMode.toString());
+    
+    // Force update the dark class
+    const htmlElement = document.documentElement;
     if (darkMode) {
-      document.documentElement.classList.add('dark');
+      htmlElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      htmlElement.classList.remove('dark');
     }
+    
+    // Force a tiny delay to ensure Tailwind picks it up
+    setTimeout(() => {
+      if (darkMode) {
+        htmlElement.classList.add('dark');
+      } else {
+        htmlElement.classList.remove('dark');
+      }
+    }, 0);
   }, [darkMode]);
 
   // Initialize exercises on mount with level filtering
@@ -1990,7 +2013,7 @@ export default function DutchVerbApp() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Start Screen */}
       {showStartScreen && (
         <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -2022,7 +2045,7 @@ export default function DutchVerbApp() {
                   <span className="text-4xl font-bold text-white">NL</span>
                 </div>
               </div>
-              <h1 className="text-6xl font-bold text-stone-900 dark:text-stone-100 mb-4 leading-tight">
+              <h1 className="text-6xl font-bold text-stone-900 dark:text-white mb-4 leading-tight">
                 Master Dutch Verbs
               </h1>
               <p className="text-xl text-stone-600 dark:text-stone-400 max-w-2xl mx-auto leading-relaxed">
@@ -2049,7 +2072,7 @@ export default function DutchVerbApp() {
                 <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                   <Play className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-3">Single Question</h3>
+                <h3 className="text-2xl font-bold text-stone-900 dark:text-white mb-3">Single Question</h3>
                 <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
                   Practice one conjugation at a time with instant feedback, context sentences, and detailed grammar explanations
                 </p>
@@ -2075,7 +2098,7 @@ export default function DutchVerbApp() {
                 <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                   <BarChart3 className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-3">Full Table Mode</h3>
+                <h3 className="text-2xl font-bold text-stone-900 dark:text-white mb-3">Full Table Mode</h3>
                 <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
                   Fill complete conjugation tables for all 6 persons in one go. Perfect for comprehensive practice
                 </p>
@@ -2101,7 +2124,7 @@ export default function DutchVerbApp() {
                 <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                   <Award className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-3">Participle Practice</h3>
+                <h3 className="text-2xl font-bold text-stone-900 dark:text-white mb-3">Participle Practice</h3>
                 <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
                   Master past participles and auxiliary verb selection with focused drills across all 300+ verbs
                 </p>
@@ -2119,7 +2142,7 @@ export default function DutchVerbApp() {
                   <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <Target className="w-6 h-6 text-blue-600" />
                   </div>
-                  <h4 className="font-bold text-stone-900 dark:text-stone-100 mb-1">Smart Learning</h4>
+                  <h4 className="font-bold text-stone-900 dark:text-white mb-1">Smart Learning</h4>
                   <p className="text-sm text-stone-600 dark:text-stone-400">Spaced repetition focuses on weak areas</p>
                 </div>
                 
@@ -2127,7 +2150,7 @@ export default function DutchVerbApp() {
                   <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <Volume2 className="w-6 h-6 text-purple-600" />
                   </div>
-                  <h4 className="font-bold text-stone-900 dark:text-stone-100 mb-1">Native Audio</h4>
+                  <h4 className="font-bold text-stone-900 dark:text-white mb-1">Native Audio</h4>
                   <p className="text-sm text-stone-600 dark:text-stone-400">AI Dutch pronunciation for every verb</p>
                 </div>
 
@@ -2135,7 +2158,7 @@ export default function DutchVerbApp() {
                   <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <BarChart3 className="w-6 h-6 text-emerald-600" />
                   </div>
-                  <h4 className="font-bold text-stone-900 dark:text-stone-100 mb-1">Track Progress</h4>
+                  <h4 className="font-bold text-stone-900 dark:text-white mb-1">Track Progress</h4>
                   <p className="text-sm text-stone-600 dark:text-stone-400">Detailed stats and streak tracking</p>
                 </div>
 
@@ -2145,7 +2168,7 @@ export default function DutchVerbApp() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                   </div>
-                  <h4 className="font-bold text-stone-900 dark:text-stone-100 mb-1">Grammar Rules</h4>
+                  <h4 className="font-bold text-stone-900 dark:text-white mb-1">Grammar Rules</h4>
                   <p className="text-sm text-stone-600 dark:text-stone-400">Learn strong verb patterns, not memorization</p>
                 </div>
               </div>
@@ -2186,7 +2209,7 @@ export default function DutchVerbApp() {
                 <span className="text-lg font-bold text-white">NL</span>
               </button>
               <div>
-                <h1 className="text-xl font-bold text-stone-800 dark:text-stone-100">Dutch Verb Practice</h1>
+                <h1 className="text-xl font-bold text-stone-800 dark:text-white">Dutch Verb Practice</h1>
                 <p className="text-xs text-stone-500 dark:text-stone-400">
                   {practiceMode === 'single' ? 'Single Question Mode' : 
                    practiceMode === 'table' ? 'Full Table Mode' : 
@@ -2209,7 +2232,7 @@ export default function DutchVerbApp() {
               {/* Dark Mode Toggle */}
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className="p-2 hover:bg-stone-100 dark:hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                className="p-2 hover:bg-stone-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
               >
                 {darkMode ? (
@@ -2226,7 +2249,7 @@ export default function DutchVerbApp() {
               {reviewItems.length > 0 && (
                 <button
                   onClick={() => setShowReview(!showReview)}
-                  className="relative p-2 hover:bg-stone-100 dark:hover:bg-gray-700 dark:bg-gray-700 rounded-lg transition-colors"
+                  className="relative p-2 hover:bg-stone-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                   title="Review incorrect answers"
                 >
                   <AlertCircle className="w-5 h-5 text-rose-600" />
@@ -2266,7 +2289,7 @@ export default function DutchVerbApp() {
         <div className="border-b border-stone-200 dark:border-gray-700 bg-white dark:bg-gray-800">
           <div className="max-w-4xl mx-auto px-6 py-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-stone-800 dark:text-stone-100">Your Progress</h3>
+              <h3 className="text-lg font-bold text-stone-800 dark:text-white">Your Progress</h3>
               <button
                 onClick={() => {
                   if (srs.resetProgress()) {
@@ -2309,7 +2332,7 @@ export default function DutchVerbApp() {
             {/* Session Stats */}
             {(stats.sessionCorrect + stats.sessionIncorrect) > 0 && (
               <div className="mb-6 p-4 bg-stone-50 dark:bg-gray-900 rounded-lg border border-stone-200 dark:border-gray-700">
-                <div className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">This Session</div>
+                <div className="text-sm font-semibold text-stone-700 dark:text-stone-200 mb-2">This Session</div>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-emerald-600" />
@@ -2404,59 +2427,36 @@ export default function DutchVerbApp() {
       {showSettings && (
         <div className="border-b border-stone-200 dark:border-gray-700 bg-white dark:bg-gray-800">
           <div className="max-w-4xl mx-auto px-6 py-6">
-            <h3 className="font-semibold text-stone-800 dark:text-stone-100 mb-4">Practice Settings</h3>
+            <h3 className="font-semibold text-stone-800 dark:text-white mb-4">Practice Settings</h3>
             
             {/* CEFR Level Range */}
             <div className="mb-6 p-4 bg-stone-50 dark:bg-gray-900 rounded-lg border border-stone-200 dark:border-gray-700">
               <div className="flex items-center justify-between mb-3">
-                <label className="text-sm font-semibold text-stone-700">Vocabulary Level (CEFR)</label>
+                <label className="text-sm font-semibold text-stone-700 dark:text-stone-200">Vocabulary Level (CEFR)</label>
                 <div className="flex items-center gap-2 px-3 py-1 bg-white dark:bg-gray-800 rounded border border-stone-300 dark:border-gray-600">
-                  <span className="text-sm font-bold text-orange-600">{levelRange.min}</span>
+                  <span className="text-sm font-bold text-orange-600 dark:text-orange-400">{levelRange.min}</span>
                   <span className="text-xs text-stone-500 dark:text-stone-400">to</span>
-                  <span className="text-sm font-bold text-orange-600">{levelRange.max}</span>
+                  <span className="text-sm font-bold text-orange-600 dark:text-orange-400">{levelRange.max}</span>
                 </div>
               </div>
               
-              <div className="space-y-4">
-                {/* Min Level */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-stone-600 dark:text-stone-400">Minimum Level</span>
-                    <span className="text-xs font-semibold text-stone-700">{levelRange.min}</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="5"
-                    value={['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].indexOf(levelRange.min)}
-                    onChange={(e) => {
-                      const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-                      const newMin = levels[parseInt(e.target.value)];
-                      const maxIndex = levels.indexOf(levelRange.max);
-                      const newMinIndex = parseInt(e.target.value);
-                      setLevelRange({
-                        min: newMin,
-                        max: newMinIndex > maxIndex ? newMin : levelRange.max
-                      });
-                    }}
-                    className="w-full h-2 bg-gradient-to-r from-emerald-200 via-amber-200 to-rose-200 rounded-lg appearance-none cursor-pointer"
-                    style={{
-                      accentColor: '#f97316'
-                    }}
-                  />
-                  <div className="flex justify-between mt-1">
-                    {['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map(level => (
-                      <span key={level} className="text-xs text-stone-400">{level}</span>
-                    ))}
-                  </div>
-                </div>
+              {/* Dual Handle Range Slider */}
+              <div className="relative pt-2 pb-6">
+                {/* Track Background */}
+                <div className="absolute top-2 left-0 right-0 h-2 bg-gradient-to-r from-emerald-200 via-amber-200 to-rose-200 dark:from-emerald-800 dark:via-amber-800 dark:to-rose-800 rounded-full pointer-events-none"></div>
                 
-                {/* Max Level */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-stone-600 dark:text-stone-400">Maximum Level</span>
-                    <span className="text-xs font-semibold text-stone-700">{levelRange.max}</span>
-                  </div>
+                {/* Active Range Highlight */}
+                <div 
+                  className="absolute top-2 h-2 bg-orange-500 dark:bg-orange-400 rounded-full transition-all pointer-events-none"
+                  style={{
+                    left: `${(['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].indexOf(levelRange.min) / 5) * 100}%`,
+                    right: `${(1 - (['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].indexOf(levelRange.max) / 5)) * 100}%`
+                  }}
+                ></div>
+                
+                {/* Invisible full-width inputs stacked */}
+                <div className="relative w-full h-6">
+                  {/* Max Handle - Lower layer */}
                   <input
                     type="range"
                     min="0"
@@ -2472,18 +2472,121 @@ export default function DutchVerbApp() {
                         max: newMax
                       });
                     }}
-                    className="w-full h-2 bg-gradient-to-r from-emerald-200 via-amber-200 to-rose-200 rounded-lg appearance-none cursor-pointer"
-                    style={{
-                      accentColor: '#f97316'
-                    }}
+                    className="slider-max absolute top-0 w-full appearance-none bg-transparent cursor-pointer"
                   />
-                  <div className="flex justify-between mt-1">
-                    {['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map(level => (
-                      <span key={level} className="text-xs text-stone-400">{level}</span>
-                    ))}
-                  </div>
+                  
+                  {/* Min Handle - Upper layer */}
+                  <input
+                    type="range"
+                    min="0"
+                    max="5"
+                    value={['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].indexOf(levelRange.min)}
+                    onChange={(e) => {
+                      const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+                      const newMin = levels[parseInt(e.target.value)];
+                      const maxIndex = levels.indexOf(levelRange.max);
+                      const newMinIndex = parseInt(e.target.value);
+                      setLevelRange({
+                        min: newMin,
+                        max: newMinIndex > maxIndex ? newMin : levelRange.max
+                      });
+                    }}
+                    className="slider-min absolute top-0 w-full appearance-none bg-transparent cursor-pointer"
+                  />
+                </div>
+                
+                {/* Level Labels */}
+                <div className="flex justify-between mt-4">
+                  {['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((level, idx) => {
+                    const minIdx = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].indexOf(levelRange.min);
+                    const maxIdx = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].indexOf(levelRange.max);
+                    const isInRange = idx >= minIdx && idx <= maxIdx;
+                    return (
+                      <span 
+                        key={level} 
+                        className={`text-xs font-semibold transition-colors ${
+                          isInRange 
+                            ? 'text-orange-600 dark:text-orange-400' 
+                            : 'text-stone-400 dark:text-stone-600'
+                        }`}
+                      >
+                        {level}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
+              
+              <style>{`
+                /* Base range input styling */
+                input[type="range"] {
+                  -webkit-appearance: none;
+                  appearance: none;
+                  height: 24px;
+                  pointer-events: none;
+                }
+                
+                /* Only enable pointer events on the thumb */
+                input[type="range"]::-webkit-slider-thumb {
+                  pointer-events: auto;
+                  -webkit-appearance: none;
+                  appearance: none;
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  background: #f97316;
+                  cursor: pointer;
+                  border: 3px solid white;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                  transition: all 0.15s;
+                  position: relative;
+                  z-index: 10;
+                }
+                
+                input[type="range"]::-webkit-slider-thumb:hover {
+                  transform: scale(1.2);
+                  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+                }
+                
+                input[type="range"]::-moz-range-thumb {
+                  pointer-events: auto;
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  background: #f97316;
+                  cursor: pointer;
+                  border: 3px solid white;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                  transition: all 0.15s;
+                  position: relative;
+                  z-index: 10;
+                }
+                
+                input[type="range"]::-moz-range-thumb:hover {
+                  transform: scale(1.2);
+                  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+                }
+                
+                /* Dark mode thumb styling */
+                .dark input[type="range"]::-webkit-slider-thumb {
+                  background: #fb923c;
+                  border-color: #1f2937;
+                }
+                
+                .dark input[type="range"]::-moz-range-thumb {
+                  background: #fb923c;
+                  border-color: #1f2937;
+                }
+                
+                /* Layer the sliders - min on top */
+                .slider-min {
+                  z-index: 5;
+                }
+                
+                .slider-max {
+                  z-index: 4;
+                }
+              `}</style>
               
               <div className="mt-3 text-xs text-stone-500 dark:text-stone-400">
                 <div className="flex items-center gap-1">
@@ -2645,7 +2748,7 @@ export default function DutchVerbApp() {
                     {batchProgress.filter(r => !r.correct).map((result, idx) => (
                       <div key={idx} className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="font-serif font-semibold text-stone-800 dark:text-stone-100">{result.verb}</span>
+                          <span className="font-serif font-semibold text-stone-800 dark:text-white">{result.verb}</span>
                           <span className={`px-2 py-1 rounded text-xs font-semibold ${tenseColors[result.tense].bg} ${tenseColors[result.tense].text}`}>
                             {tenseLabels[result.tense]}
                           </span>
@@ -2653,7 +2756,7 @@ export default function DutchVerbApp() {
                         <div className="text-sm space-y-1">
                           <div className="flex items-baseline gap-2">
                             <span className="text-stone-600 dark:text-stone-400">Person:</span>
-                            <span className="text-stone-800 dark:text-stone-100">{pronounLabels[result.pronounIndex]}</span>
+                            <span className="text-stone-800 dark:text-white">{pronounLabels[result.pronounIndex]}</span>
                           </div>
                           <div className="flex items-baseline gap-2">
                             <span className="text-stone-600 dark:text-stone-400">Your answer:</span>
@@ -2693,7 +2796,7 @@ export default function DutchVerbApp() {
               </h3>
               <button
                 onClick={() => setReviewItems([])}
-                className="text-sm text-stone-600 hover:text-stone-800 dark:text-stone-100"
+                className="text-sm text-stone-600 hover:text-stone-800 dark:text-white"
               >
                 Clear All
               </button>
@@ -2703,7 +2806,7 @@ export default function DutchVerbApp() {
               {reviewItems.slice().reverse().map((result, idx) => (
                 <div key={idx} className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-serif font-semibold text-stone-800 dark:text-stone-100">{result.verb}</span>
+                    <span className="font-serif font-semibold text-stone-800 dark:text-white">{result.verb}</span>
                     <span className={`px-2 py-1 rounded text-xs font-semibold ${tenseColors[result.tense].bg} ${tenseColors[result.tense].text}`}>
                       {tenseLabels[result.tense]}
                     </span>
@@ -2711,7 +2814,7 @@ export default function DutchVerbApp() {
                   <div className="text-sm space-y-1">
                     <div className="flex items-baseline gap-2">
                       <span className="text-stone-600 dark:text-stone-400">Person:</span>
-                      <span className="text-stone-800 dark:text-stone-100">{pronounLabels[result.pronounIndex]}</span>
+                      <span className="text-stone-800 dark:text-white">{pronounLabels[result.pronounIndex]}</span>
                     </div>
                     <div className="flex items-baseline gap-2">
                       <span className="text-stone-600 dark:text-stone-400">Your answer:</span>
@@ -2735,7 +2838,7 @@ export default function DutchVerbApp() {
           <div className="max-w-6xl mx-auto px-6 py-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-1">Verb Library</h2>
+                <h2 className="text-2xl font-bold text-stone-800 dark:text-white mb-1">Verb Library</h2>
                 <p className="text-sm text-stone-600 dark:text-stone-400">All {DutchVerbs.getAllVerbs().length} verbs with mastery tracking</p>
               </div>
               <button
@@ -2750,27 +2853,27 @@ export default function DutchVerbApp() {
             <div className="flex flex-wrap gap-3 mb-6 p-4 bg-stone-50 dark:bg-gray-900 rounded-lg">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                <span className="text-xs text-stone-700 dark:text-stone-300 dark:text-stone-300">Mastered (20+ attempts, 90%+)</span>
+                <span className="text-xs text-stone-700 dark:text-stone-200 dark:text-stone-200">Mastered (20+ attempts, 90%+)</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-blue-50 dark:bg-blue-900/200 rounded-full"></div>
-                <span className="text-xs text-stone-700 dark:text-stone-300">Proficient (15+ attempts, 80%+)</span>
+                <span className="text-xs text-stone-700 dark:text-stone-200">Proficient (15+ attempts, 80%+)</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
-                <span className="text-xs text-stone-700 dark:text-stone-300">Familiar (10+ attempts, 70%+)</span>
+                <span className="text-xs text-stone-700 dark:text-stone-200">Familiar (10+ attempts, 70%+)</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-amber-50 dark:bg-amber-900/200 rounded-full"></div>
-                <span className="text-xs text-stone-700 dark:text-stone-300">Learning (5+ attempts, 60%+)</span>
+                <span className="text-xs text-stone-700 dark:text-stone-200">Learning (5+ attempts, 60%+)</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                <span className="text-xs text-stone-700 dark:text-stone-300">Beginner (1+ attempts)</span>
+                <span className="text-xs text-stone-700 dark:text-stone-200">Beginner (1+ attempts)</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-                <span className="text-xs text-stone-700 dark:text-stone-300">Not Practiced</span>
+                <span className="text-xs text-stone-700 dark:text-stone-200">Not Practiced</span>
               </div>
             </div>
 
@@ -2841,11 +2944,11 @@ export default function DutchVerbApp() {
                         <>
                           <div className="flex justify-between">
                             <span className="text-stone-600 dark:text-stone-400">Attempts:</span>
-                            <span className="text-stone-800 dark:text-stone-100">{mastery.attempts}</span>
+                            <span className="text-stone-800 dark:text-white">{mastery.attempts}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-stone-600 dark:text-stone-400">Accuracy:</span>
-                            <span className="text-stone-800 dark:text-stone-100">{mastery.accuracy}%</span>
+                            <span className="text-stone-800 dark:text-white">{mastery.accuracy}%</span>
                           </div>
                         </>
                       )}
@@ -2965,9 +3068,9 @@ export default function DutchVerbApp() {
                 <div className="inline-block px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-2xl mb-4">
                   <h3 className="text-lg font-bold">Past Participle Practice</h3>
                 </div>
-                <h2 className="text-5xl font-bold text-stone-800 mb-2 font-serif">{currentExercise.verb}</h2>
+                <h2 className="text-5xl font-bold text-stone-800 dark:text-white mb-2 font-serif">{currentExercise.verb}</h2>
                 {getEnglishTranslation(currentExercise.verb) && (
-                  <p className="text-lg text-stone-500 italic mb-4">({getEnglishTranslation(currentExercise.verb)})</p>
+                  <p className="text-lg text-stone-500 dark:text-stone-400 italic mb-4">({getEnglishTranslation(currentExercise.verb)})</p>
                 )}
                 <p className="text-stone-600 dark:text-stone-400">What is the past participle and which auxiliary verb does it use?</p>
               </div>
@@ -2976,7 +3079,7 @@ export default function DutchVerbApp() {
                 <div className="space-y-6 max-w-xl mx-auto">
                   {/* Participle Input */}
                   <div>
-                    <label className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
+                    <label className="block text-sm font-semibold text-stone-700 dark:text-stone-200 mb-2">
                       Past Participle (Voltooid Deelwoord)
                     </label>
                     <input
@@ -2997,7 +3100,7 @@ export default function DutchVerbApp() {
                           }
                         }
                       }}
-                      className="w-full px-4 py-3 border-2 border-stone-300 rounded-lg focus:outline-none focus:border-purple-500 text-lg"
+                      className="w-full px-4 py-3 border-2 border-stone-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-purple-500 text-lg"
                       placeholder="e.g., gelopen, gemaakt..."
                       autoFocus
                     />
@@ -3005,7 +3108,7 @@ export default function DutchVerbApp() {
 
                   {/* Auxiliary Selection */}
                   <div>
-                    <label className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
+                    <label className="block text-sm font-semibold text-stone-700 dark:text-stone-200 mb-2">
                       Auxiliary Verb (Hulpwerkwoord)
                     </label>
                     <div className="grid grid-cols-2 gap-3">
@@ -3150,7 +3253,7 @@ export default function DutchVerbApp() {
               <div className="text-center mb-8">
                 <h2 className="text-4xl font-bold text-stone-800 mb-2 font-serif">{currentExercise.verb}</h2>
                 {getEnglishTranslation(currentExercise.verb) && (
-                  <p className="text-lg text-stone-500 italic mb-3">({getEnglishTranslation(currentExercise.verb)})</p>
+                  <p className="text-lg text-stone-500 dark:text-stone-400 italic mb-3">({getEnglishTranslation(currentExercise.verb)})</p>
                 )}
                 <div className={`inline-block px-6 py-2 rounded-xl ${tenseColors[currentExercise.tense].bg} ${tenseColors[currentExercise.tense].text}`}>
                   {tenseLabels[currentExercise.tense]}
@@ -3289,7 +3392,7 @@ export default function DutchVerbApp() {
           <div className="text-center mb-8">
             {/* Large Tense Badge */}
             <div className={`inline-block px-8 py-4 rounded-xl border-2 mb-6 ${tenseColors[currentExercise.tense].bg} ${tenseColors[currentExercise.tense].border}`}>
-              <div className="text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1">
+              <div className="text-xs font-semibold uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1">
                 Tense
               </div>
               <div className={`text-2xl font-bold ${tenseColors[currentExercise.tense].text}`}>
@@ -3298,18 +3401,18 @@ export default function DutchVerbApp() {
             </div>
 
             {/* Pronoun Badge */}
-            <div className="inline-block px-6 py-3 bg-stone-100 dark:bg-gray-700 border-2 border-stone-300 rounded-xl ml-4 mb-6">
-              <div className="text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1">
+            <div className="inline-block px-6 py-3 bg-stone-100 dark:bg-gray-700 border-2 border-stone-300 dark:border-gray-600 rounded-xl ml-4 mb-6">
+              <div className="text-xs font-semibold uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1">
                 Person
               </div>
-              <div className="text-xl font-bold text-stone-800 dark:text-stone-100">
+              <div className="text-xl font-bold text-stone-800 dark:text-white">
                 {pronounLabels[currentExercise.pronounIndex]}
               </div>
             </div>
 
             {/* Verb */}
             <div className="flex items-center justify-center gap-3 mt-6">
-              <h2 className="text-5xl font-bold text-stone-800 mb-3 font-serif">
+              <h2 className="text-5xl font-bold text-stone-800 dark:text-white mb-3 font-serif">
                 {currentExercise.verb}
               </h2>
               <button
@@ -3321,7 +3424,7 @@ export default function DutchVerbApp() {
               </button>
             </div>
             {getEnglishTranslation(currentExercise.verb) && (
-              <p className="text-lg text-stone-500 italic mb-2">({getEnglishTranslation(currentExercise.verb)})</p>
+              <p className="text-lg text-stone-500 dark:text-stone-400 italic mb-2">({getEnglishTranslation(currentExercise.verb)})</p>
             )}
             <p className="text-stone-500 text-lg">Conjugate this verb</p>
           </div>
@@ -3331,10 +3434,10 @@ export default function DutchVerbApp() {
             <div className={`mb-8 p-6 rounded-lg border-2 bg-gradient-to-br ${tenseColors[currentExercise.tense].gradient} ${tenseColors[currentExercise.tense].border}`}>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1">
-                  <p className="text-lg text-stone-700 dark:text-stone-300 mb-2 font-semibold">
+                  <p className="text-lg text-stone-700 dark:text-stone-200 mb-2 font-semibold">
                     {contextSentence.nl.replace('___', '______')}
                   </p>
-                  <p className="text-sm text-stone-600 italic">
+                  <p className="text-sm text-stone-600 dark:text-stone-400 italic">
                     {contextSentence.en}
                   </p>
                 </div>
@@ -3441,7 +3544,7 @@ export default function DutchVerbApp() {
               <div className="mt-6 p-5 bg-stone-50 dark:bg-gray-900 rounded-lg border border-stone-200 dark:border-gray-700">
                 <h4 className="text-sm font-semibold text-stone-700 mb-3 flex items-center gap-2">
                   <span>Full Conjugation:</span>
-                  <span className="font-serif text-stone-800 dark:text-stone-100">{currentExercise.verb}</span>
+                  <span className="font-serif text-stone-800 dark:text-white">{currentExercise.verb}</span>
                   <span className={`px-2 py-1 rounded text-xs ${tenseColors[currentExercise.tense].bg} ${tenseColors[currentExercise.tense].text}`}>
                     {tenseLabels[currentExercise.tense]}
                   </span>
