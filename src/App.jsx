@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Check, X, Settings, TrendingUp, Play, BarChart3, Award, AlertCircle, Calendar, Target, Volume2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Check, X, Settings, TrendingUp, Play, BarChart3, Award, AlertCircle, Calendar, Target, Volume2, BookOpen, CheckCircle, XCircle } from 'lucide-react';
 
 // Dutch verb conjugation engine with grammatical accuracy
 const DutchVerbs = {
@@ -1556,6 +1556,9 @@ class SpacedRepetitionSystem {
 
 
 export default function DutchVerbApp() {
+  console.log('DutchVerbApp starting...');
+  
+  try {
   const [srs] = useState(() => new SpacedRepetitionSystem());
   const [enabledTenses, setEnabledTenses] = useState(['ott', 'ovt', 'vtt']);
   const [levelRange, setLevelRange] = useState({ min: 'A1', max: 'B1' });
@@ -4099,4 +4102,23 @@ export default function DutchVerbApp() {
       )}
     </div>
   );
+  
+  } catch (error) {
+    console.error('App crashed:', error);
+    return (
+      <div className="min-h-screen bg-red-50 flex items-center justify-center p-6">
+        <div className="max-w-2xl bg-white rounded-xl shadow-lg p-8">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Application Error</h1>
+          <p className="text-gray-700 mb-4">Something went wrong. Please check the console for details.</p>
+          <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">{error.toString()}</pre>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700"
+          >
+            Reload Page
+          </button>
+        </div>
+      </div>
+    );
+  }
 }
