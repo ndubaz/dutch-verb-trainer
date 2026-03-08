@@ -1,61 +1,71 @@
-# Dutch Verb Trainer
+# Dutch Verb Trainer - 500 Verbs Edition
 
-A sophisticated spaced repetition learning app for mastering Dutch verb conjugations.
+Master Dutch verb conjugations with spaced repetition and intelligent learning algorithms.
 
 ## Features
 
-- **Spaced Repetition System**: Intelligent algorithm that adapts to your learning pace
-- **Problem Area Tracking**: Focuses on verb-tense combinations you struggle with
-- **Contextual Learning**: Practice with real Dutch sentences and English translations
-- **Customizable Tenses**: Choose which tenses to practice (Present, Past, Perfect, etc.)
-- **Accurate Grammar**: Based on standard Netherlands Dutch grammar rules
+- 🎯 **500 Dutch verbs** with complete conjugations
+- 📚 **4 Practice Modes**: Single Question, Full Table, Participle, Vocabulary
+- 🌙 **Dark Mode**: Full dark mode support
+- 🔊 **Audio Pronunciation**: Native Dutch pronunciation via Web Speech API
+- 📊 **Spaced Repetition**: Smart algorithm tracks your progress
+- 🎨 **Beautiful UI**: Delft Blue aesthetic with Tailwind CSS
 
-## Live Demo
+## Specialized Vocabulary
 
-Visit the app at: https://yourusername.github.io/dutch-verb-trainer
+- 🎖️ **Military & Defense**: vechten, aanvallen, verdedigen, bevelen, schieten...
+- 📰 **News & Media**: berichten, publiceren, melden, interviewen...
+- 🏛️ **Government & Politics**: regeren, stemmen, verkiezen, aftreden...
+- 👨‍🍳 **Cooking**: koken, bakken, braden, marineren, flamberen...
+- 📈 **Advanced Academic**: analyseren, evalueren, implementeren...
 
-## Local Development
+## Quick Start
+
+### Local Development
 
 ```bash
-# Install dependencies
 npm install
-
-# Run development server
 npm run dev
-
-# Build for production
-npm run build
 ```
 
-## Deployment to GitHub Pages
+Open http://localhost:5173
 
-1. **First time setup:**
-   ```bash
-   # Create repository on GitHub named 'dutch-verb-trainer'
-   
-   # Initialize git in your project
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git branch -M main
-   git remote add origin https://github.com/yourusername/dutch-verb-trainer.git
-   git push -u origin main
-   ```
+### Production Build
 
-2. **Update package.json:**
-   - Change `"homepage"` to: `"https://yourusername.github.io/dutch-verb-trainer"`
-   - Replace `yourusername` with your actual GitHub username
+```bash
+npm install
+npm run build
+npm run preview
+```
 
-3. **Deploy:**
-   ```bash
-   npm run deploy
-   ```
+### Deploy to Vercel
 
-4. **Enable GitHub Pages:**
-   - Go to your repository on GitHub
-   - Click Settings → Pages
-   - Source should be set to `gh-pages` branch
-   - Your site will be live at the homepage URL
+1. Push to GitHub
+2. Import in Vercel
+3. Set framework to "Vite"
+4. Deploy
+
+## Practice Modes
+
+### 1. Single Question Mode
+Practice one conjugation at a time with instant feedback, context sentences, and grammar explanations.
+
+### 2. Full Table Mode
+Fill complete conjugation tables for all 6 persons (singular & plural).
+
+### 3. Participle Practice
+Master past participles and auxiliary verb selection (hebben vs zijn).
+
+### 4. Vocabulary Practice
+Learn verb infinitives by translating between Dutch and English in both directions.
+
+## Advanced Features
+
+- **Hide Dutch Verb**: Test your memory by showing only English translations
+- **CEFR Filtering**: Filter verbs by level (A1-C2)
+- **Mastery Tracking**: See which verbs you've mastered
+- **Problem Areas**: Focus on verbs you struggle with
+- **Strong Verb Classes**: Learn ablaut patterns for irregular verbs
 
 ## Tech Stack
 
@@ -63,6 +73,8 @@ npm run build
 - Vite
 - Tailwind CSS
 - Lucide React Icons
+- Web Audio API
+- Web Speech API
 
 ## License
 
