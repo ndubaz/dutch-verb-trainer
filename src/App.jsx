@@ -3054,7 +3054,6 @@ export default function DutchVerbApp() {
                 Continue Practicing
                 <span className="text-xs opacity-70">(Press Enter)</span>
               </button>
-              </button>
             </div>
           </div>
         </div>
