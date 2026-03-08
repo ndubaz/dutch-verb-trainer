@@ -1689,9 +1689,12 @@ export default function DutchVerbApp() {
   const loadNextExercise = () => {
     let exercise;
     
-    // Use different selection logic for participle mode
+    // Use different selection logic based on practice mode
     if (practiceMode === 'participle') {
       exercise = srs.selectNextParticiple();
+    } else if (practiceMode === 'vocabulary') {
+      // For vocabulary mode, just select a random verb from available pool
+      exercise = srs.selectNextExercise(enabledTenses);
     } else {
       exercise = srs.selectNextExercise(enabledTenses);
     }
@@ -1702,8 +1705,8 @@ export default function DutchVerbApp() {
       setShowResult(false);
       setStartTime(Date.now());
       
-      // Only set context sentences for non-participle modes
-      if (practiceMode !== 'participle') {
+      // Only set context sentences for single question and table modes
+      if (practiceMode !== 'participle' && practiceMode !== 'vocabulary') {
         // Find EXACT matching context sentence: same verb, tense, AND pronoun
         const sentences = exampleSentences[exercise.verb];
         if (sentences) {
@@ -2164,12 +2167,37 @@ export default function DutchVerbApp() {
     }
   };
 
-  if (!isInitialized || !currentExercise) {
+  // Show loading only during initial load, not when waiting for exercise
+  if (!isInitialized) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
           <p className="mt-4 text-stone-600 dark:text-stone-400">Loading exercises...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If no current exercise after initialization, show error
+  if (!currentExercise) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-6">
+        <div className="text-center max-w-md">
+          <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-stone-800 dark:text-white mb-2">No Exercises Available</h2>
+          <p className="text-stone-600 dark:text-stone-400 mb-6">
+            Try adjusting your CEFR level range or enabled tenses in settings.
+          </p>
+          <button
+            onClick={() => {
+              setShowStartScreen(true);
+              setIsInitialized(false);
+            }}
+            className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-colors"
+          >
+            Back to Start
+          </button>
         </div>
       </div>
     );
@@ -2309,6 +2337,7 @@ export default function DutchVerbApp() {
                   setPracticeMode('vocabulary');
                   if (!isInitialized) {
                     setShowStartScreen(false);
+                    initializeExercises();
                     setIsInitialized(true);
                     loadNextExercise();
                   }
