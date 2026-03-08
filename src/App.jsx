@@ -1580,7 +1580,7 @@ export default function DutchVerbApp() {
   
   // App mode and start screen
   const [showStartScreen, setShowStartScreen] = useState(true);
-  const [practiceMode, setPracticeMode] = useState('single'); // 'single' or 'table'
+  const [practiceMode, setPracticeMode] = useState('single'); // 'single', 'table', 'participle', or 'vocabulary'
   const [tableAnswers, setTableAnswers] = useState({});
   const [showVerbLibrary, setShowVerbLibrary] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
@@ -1604,6 +1604,8 @@ export default function DutchVerbApp() {
     const saved = localStorage.getItem('hideDutchVerb');
     return saved === 'true';
   });
+
+  const [vocabularyDirection, setVocabularyDirection] = useState('nl-to-en');
 
   // Save dark mode preference to localStorage when it changes
   useEffect(() => {
@@ -2221,7 +2223,7 @@ export default function DutchVerbApp() {
             </div>
 
             {/* Mode Selection Cards */}
-            <div className="grid md:grid-cols-3 gap-6 mb-10">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
               
               {/* Single Question Mode */}
               <button
@@ -2293,9 +2295,34 @@ export default function DutchVerbApp() {
                 </div>
                 <h3 className="text-2xl font-bold text-stone-900 dark:text-white mb-3">Participle Practice</h3>
                 <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
-                  Master past participles and auxiliary verb selection with focused drills across all 300+ verbs
+                  Master past participles and auxiliary verb selection with focused drills across all 500 verbs
                 </p>
                 <div className="flex items-center text-purple-600 dark:text-purple-400 font-semibold">
+                  Start practicing 
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+              </button>
+
+              {/* Vocabulary Practice Card */}
+              <button
+                onClick={() => {
+                  setPracticeMode('vocabulary');
+                  if (!isInitialized) {
+                    setShowStartScreen(false);
+                    setIsInitialized(true);
+                    loadNextExercise();
+                  }
+                }}
+                className="group bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-emerald-500 dark:hover:border-emerald-400 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
+              >
+                <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  <BookOpen className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-stone-900 dark:text-white mb-3">Vocabulary Practice</h3>
+                <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+                  Build your vocabulary by translating between Dutch and English infinitives
+                </p>
+                <div className="flex items-center text-emerald-600 dark:text-emerald-400 font-semibold">
                   Start practicing 
                   <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -3583,6 +3610,176 @@ export default function DutchVerbApp() {
                   >
                     Next Verb
                   </button>
+                </div>
+              )}
+            </div>
+          ) : practiceMode === 'vocabulary' ? (
+            <div className="max-w-2xl mx-auto">
+              <div className="text-center mb-8">
+                <div className="inline-block px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl mb-4">
+                  <h3 className="text-lg font-bold">Vocabulary Practice</h3>
+                </div>
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <button
+                    onClick={() => setVocabularyDirection('nl-to-en')}
+                    className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                      vocabularyDirection === 'nl-to-en'
+                        ? 'bg-emerald-500 text-white shadow-lg scale-105'
+                        : 'bg-stone-100 dark:bg-gray-700 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    NL → EN
+                  </button>
+                  <button
+                    onClick={() => setVocabularyDirection('en-to-nl')}
+                    className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                      vocabularyDirection === 'en-to-nl'
+                        ? 'bg-emerald-500 text-white shadow-lg scale-105'
+                        : 'bg-stone-100 dark:bg-gray-700 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    EN → NL
+                  </button>
+                </div>
+              </div>
+
+              {currentExercise && (
+                <div>
+                  {!showResult ? (
+                    <div className="space-y-6">
+                      <div className="text-center p-8 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-800 dark:to-gray-900 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
+                        <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300 mb-2">
+                          {vocabularyDirection === 'nl-to-en' ? 'Dutch → English' : 'English → Dutch'}
+                        </p>
+                        <div className="flex items-center justify-center gap-3">
+                          <h2 className="text-4xl font-bold text-stone-800 dark:text-white font-serif">
+                            {vocabularyDirection === 'nl-to-en' ? currentExercise.verb : (getEnglishTranslation(currentExercise.verb) || 'to ' + currentExercise.verb)}
+                          </h2>
+                          {vocabularyDirection === 'nl-to-en' && (
+                            <button
+                              onClick={() => speakDutch(currentExercise.verb)}
+                              className="p-2 hover:bg-emerald-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                              title="Pronounce Dutch verb"
+                            >
+                              <Volume2 className="w-6 h-6 text-emerald-600" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-stone-700 dark:text-stone-200 mb-2">
+                          {vocabularyDirection === 'nl-to-en' ? 'English Translation' : 'Dutch Infinitive'}
+                        </label>
+                        <input
+                          ref={inputRef}
+                          type="text"
+                          value={userAnswer}
+                          onChange={(e) => setUserAnswer(e.target.value)}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter' && userAnswer.trim()) {
+                              e.preventDefault();
+                              const correctAnswer = vocabularyDirection === 'nl-to-en' 
+                                ? (getEnglishTranslation(currentExercise.verb) || '').toLowerCase().replace(/^to /, '')
+                                : currentExercise.verb.toLowerCase();
+                              const userAnswerClean = userAnswer.trim().toLowerCase().replace(/^to /, '');
+                              
+                              if (userAnswerClean === correctAnswer) {
+                                playSuccessSound();
+                                setIsCorrect(true);
+                                setShowResult(true);
+                                updateMastery(currentExercise.verb, true);
+                              } else {
+                                playErrorSound();
+                                setIsCorrect(false);
+                                setShowResult(true);
+                                updateMastery(currentExercise.verb, false);
+                              }
+                            }
+                          }}
+                          placeholder={vocabularyDirection === 'nl-to-en' ? 'Type the English translation...' : 'Type the Dutch infinitive...'}
+                          className="w-full px-6 py-4 text-lg border-2 border-stone-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-emerald-500 dark:focus:border-emerald-400 dark:bg-gray-700 dark:text-white"
+                          autoComplete="off"
+                        />
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          if (userAnswer.trim()) {
+                            const correctAnswer = vocabularyDirection === 'nl-to-en' 
+                              ? (getEnglishTranslation(currentExercise.verb) || '').toLowerCase().replace(/^to /, '')
+                              : currentExercise.verb.toLowerCase();
+                            const userAnswerClean = userAnswer.trim().toLowerCase().replace(/^to /, '');
+                            
+                            if (userAnswerClean === correctAnswer) {
+                              playSuccessSound();
+                              setIsCorrect(true);
+                              setShowResult(true);
+                              updateMastery(currentExercise.verb, true);
+                            } else {
+                              playErrorSound();
+                              setIsCorrect(false);
+                              setShowResult(true);
+                              updateMastery(currentExercise.verb, false);
+                            }
+                          }
+                        }}
+                        className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-xl transition-colors flex items-center justify-center gap-2"
+                      >
+                        <CheckCircle className="w-5 h-5" />
+                        Check Answer
+                        <span className="text-xs opacity-70">(Press Enter)</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      <div className={`p-8 rounded-xl border-2 ${isCorrect ? 'bg-green-50 dark:bg-green-900/20 border-green-500' : 'bg-red-50 dark:bg-red-900/20 border-red-500'}`}>
+                        <div className="flex items-center gap-3 mb-4">
+                          {isCorrect ? (
+                            <CheckCircle className="w-8 h-8 text-green-600" />
+                          ) : (
+                            <XCircle className="w-8 h-8 text-red-600" />
+                          )}
+                          <h3 className={`text-2xl font-bold ${isCorrect ? 'text-green-800 dark:text-green-200' : 'text-red-800 dark:text-red-200'}`}>
+                            {isCorrect ? 'Correct!' : 'Not Quite'}
+                          </h3>
+                        </div>
+
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg">
+                            <span className="font-semibold text-stone-700 dark:text-stone-200">Dutch:</span>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xl font-bold text-stone-900 dark:text-white font-serif">{currentExercise.verb}</span>
+                              <button
+                                onClick={() => speakDutch(currentExercise.verb)}
+                                className="p-1 hover:bg-stone-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                              >
+                                <Volume2 className="w-5 h-5 text-emerald-600" />
+                              </button>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg">
+                            <span className="font-semibold text-stone-700 dark:text-stone-200">English:</span>
+                            <span className="text-xl font-bold text-stone-900 dark:text-white">{getEnglishTranslation(currentExercise.verb) || 'to ' + currentExercise.verb}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          setShowResult(false);
+                          setUserAnswer('');
+                          setIsCorrect(null);
+                          loadNextExercise();
+                        }}
+                        className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-xl transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Play className="w-5 h-5" />
+                        Next Word
+                        <span className="ml-2 text-xs opacity-70">(Press Enter)</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
