@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Check, X, Settings, TrendingUp, Play, BarChart3, Award, AlertCircle, Calendar, Target, Volume2 } from 'lucide-react';
+import { Check, X, Settings, TrendingUp, Play, BarChart3, Award, AlertCircle, Calendar, Target, Volume2, BookOpen } from 'lucide-react';
 
 // Dutch verb conjugation engine with grammatical accuracy
 const DutchVerbs = {
@@ -660,7 +660,176 @@ const DutchVerbs = {
     overschrijven: { infinitive: 'overschrijven', ott: ['schrijf over', 'schrijft over', 'schrijft over', 'schrijven over', 'schrijven over', 'schrijven over'], ovt: ['schreef over', 'schreef over', 'schreef over', 'schreven over', 'schreven over', 'schreven over'], vtt_part: 'overgeschreven', auxiliary: 'hebben', imperative: 'schrijf over', level: 'B1', separable: true, prefix: 'over', strongClass: 1 },
     aflopen: { infinitive: 'aflopen', ott: ['loop af', 'loopt af', 'loopt af', 'lopen af', 'lopen af', 'lopen af'], ovt: ['liep af', 'liep af', 'liep af', 'liepen af', 'liepen af', 'liepen af'], vtt_part: 'afgelopen', auxiliary: 'zijn', imperative: 'loop af', level: 'A2', separable: true, prefix: 'af', strongClass: 7 },
     oplopen: { infinitive: 'oplopen', ott: ['loop op', 'loopt op', 'loopt op', 'lopen op', 'lopen op', 'lopen op'], ovt: ['liep op', 'liep op', 'liep op', 'liepen op', 'liepen op', 'liepen op'], vtt_part: 'opgelopen', auxiliary: 'zijn', imperative: 'loop op', level: 'A2', separable: true, prefix: 'op', strongClass: 7 },
-    weglopen: { infinitive: 'weglopen', ott: ['loop weg', 'loopt weg', 'loopt weg', 'lopen weg', 'lopen weg', 'lopen weg'], ovt: ['liep weg', 'liep weg', 'liep weg', 'liepen weg', 'liepen weg', 'liepen weg'], vtt_part: 'weggelopen', auxiliary: 'zijn', imperative: 'loop weg', level: 'A1', separable: true, prefix: 'weg', strongClass: 7 }
+    weglopen: { infinitive: 'weglopen', ott: ['loop weg', 'loopt weg', 'loopt weg', 'lopen weg', 'lopen weg', 'lopen weg'], ovt: ['liep weg', 'liep weg', 'liep weg', 'liepen weg', 'liepen weg', 'liepen weg'], vtt_part: 'weggelopen', auxiliary: 'zijn', imperative: 'loop weg', level: 'A1', separable: true, prefix: 'weg', strongClass: 7 },
+    
+    // MILITARY & DEFENSE VERBS
+    vechten: { infinitive: 'vechten', ott: ['vecht', 'vecht', 'vecht', 'vechten', 'vechten', 'vechten'], ovt: ['vocht', 'vocht', 'vocht', 'vochten', 'vochten', 'vochten'], vtt_part: 'gevochten', auxiliary: 'hebben', imperative: 'vecht', level: 'B1', english: 'to fight', strongClass: 3 },
+    aanvallen: { infinitive: 'aanvallen', ott: ['val aan', 'valt aan', 'valt aan', 'vallen aan', 'vallen aan', 'vallen aan'], ovt: ['viel aan', 'viel aan', 'viel aan', 'vielen aan', 'vielen aan', 'vielen aan'], vtt_part: 'aangevallen', auxiliary: 'hebben', imperative: 'val aan', level: 'B2', english: 'to attack', separable: true, strongClass: 7 },
+    verdedigen: { infinitive: 'verdedigen', ott: ['verdedig', 'verdedigt', 'verdedigt', 'verdedigen', 'verdedigen', 'verdedigen'], ovt: ['verdedigde', 'verdedigde', 'verdedigde', 'verdedigden', 'verdedigden', 'verdedigden'], vtt_part: 'verdedigd', auxiliary: 'hebben', imperative: 'verdedig', level: 'B2', english: 'to defend' },
+    bevelen: { infinitive: 'bevelen', ott: ['beveel', 'beveelt', 'beveelt', 'bevelen', 'bevelen', 'bevelen'], ovt: ['beval', 'beval', 'beval', 'bevalen', 'bevalen', 'bevalen'], vtt_part: 'bevolen', auxiliary: 'hebben', imperative: 'beveel', level: 'C1', english: 'to command', strongClass: 5 },
+    marcheren: { infinitive: 'marcheren', ott: ['marcheer', 'marcheert', 'marcheert', 'marcheren', 'marcheren', 'marcheren'], ovt: ['marcheerde', 'marcheerde', 'marcheerde', 'marcheerden', 'marcheerden', 'marcheerden'], vtt_part: 'gemarcheerd', auxiliary: 'zijn', imperative: 'marcheer', level: 'B2', english: 'to march' },
+    schieten: { infinitive: 'schieten', ott: ['schiet', 'schiet', 'schiet', 'schieten', 'schieten', 'schieten'], ovt: ['schoot', 'schoot', 'schoot', 'schoten', 'schoten', 'schoten'], vtt_part: 'geschoten', auxiliary: 'hebben', imperative: 'schiet', level: 'B1', english: 'to shoot', strongClass: 2 },
+    bombarderen: { infinitive: 'bombarderen', ott: ['bombardeer', 'bombardeert', 'bombardeert', 'bombarderen', 'bombarderen', 'bombarderen'], ovt: ['bombardeerde', 'bombardeerde', 'bombardeerde', 'bombardeerden', 'bombardeerden', 'bombardeerden'], vtt_part: 'gebombardeerd', auxiliary: 'hebben', imperative: 'bombardeer', level: 'C1', english: 'to bomb' },
+    bevrijden: { infinitive: 'bevrijden', ott: ['bevrijd', 'bevrijdt', 'bevrijdt', 'bevrijden', 'bevrijden', 'bevrijden'], ovt: ['bevrijdde', 'bevrijdde', 'bevrijdde', 'bevrijdden', 'bevrijdden', 'bevrijdden'], vtt_part: 'bevrijd', auxiliary: 'hebben', imperative: 'bevrijd', level: 'B2', english: 'to liberate' },
+    bewapenen: { infinitive: 'bewapenen', ott: ['bewapen', 'bewapent', 'bewapent', 'bewapenen', 'bewapenen', 'bewapenen'], ovt: ['bewapende', 'bewapende', 'bewapende', 'bewapenden', 'bewapenden', 'bewapenden'], vtt_part: 'bewapend', auxiliary: 'hebben', imperative: 'bewapen', level: 'C1', english: 'to arm' },
+    ontmantelen: { infinitive: 'ontmantelen', ott: ['ontmantel', 'ontmantelt', 'ontmantelt', 'ontmantelen', 'ontmantelen', 'ontmantelen'], ovt: ['ontmantelde', 'ontmantelde', 'ontmantelde', 'ontmantelden', 'ontmantelden', 'ontmantelden'], vtt_part: 'ontmanteld', auxiliary: 'hebben', imperative: 'ontmantel', level: 'C1', english: 'to dismantle' },
+    patrouilleren: { infinitive: 'patrouilleren', ott: ['patrouilleer', 'patrouilleert', 'patrouilleert', 'patrouilleren', 'patrouilleren', 'patrouilleren'], ovt: ['patrouilleerde', 'patrouilleerde', 'patrouilleerde', 'patrouilleerden', 'patrouilleerden', 'patrouilleerden'], vtt_part: 'gepatrouilleerd', auxiliary: 'hebben', imperative: 'patrouilleer', level: 'C1', english: 'to patrol' },
+    
+    // NEWS & MEDIA VERBS
+    berichten: { infinitive: 'berichten', ott: ['bericht', 'bericht', 'bericht', 'berichten', 'berichten', 'berichten'], ovt: ['berichtte', 'berichtte', 'berichtte', 'berichtten', 'berichtten', 'berichtten'], vtt_part: 'bericht', auxiliary: 'hebben', imperative: 'bericht', level: 'B2', english: 'to report' },
+    publiceren: { infinitive: 'publiceren', ott: ['publiceer', 'publiceert', 'publiceert', 'publiceren', 'publiceren', 'publiceren'], ovt: ['publiceerde', 'publiceerde', 'publiceerde', 'publiceerden', 'publiceerden', 'publiceerden'], vtt_part: 'gepubliceerd', auxiliary: 'hebben', imperative: 'publiceer', level: 'B2', english: 'to publish' },
+    melden: { infinitive: 'melden', ott: ['meld', 'meldt', 'meldt', 'melden', 'melden', 'melden'], ovt: ['meldde', 'meldde', 'meldde', 'meldden', 'meldden', 'meldden'], vtt_part: 'gemeld', auxiliary: 'hebben', imperative: 'meld', level: 'B1', english: 'to report/announce' },
+    interviewen: { infinitive: 'interviewen', ott: ['interview', 'interviewt', 'interviewt', 'interviewen', 'interviewen', 'interviewen'], ovt: ['interviewde', 'interviewde', 'interviewde', 'interviewden', 'interviewden', 'interviewden'], vtt_part: 'geïnterviewd', auxiliary: 'hebben', imperative: 'interview', level: 'B2', english: 'to interview' },
+    uitzenden: { infinitive: 'uitzenden', ott: ['zend uit', 'zendt uit', 'zendt uit', 'zenden uit', 'zenden uit', 'zenden uit'], ovt: ['zond uit', 'zond uit', 'zond uit', 'zonden uit', 'zonden uit', 'zonden uit'], vtt_part: 'uitgezonden', auxiliary: 'hebben', imperative: 'zend uit', level: 'B2', english: 'to broadcast', separable: true },
+    verslaan: { infinitive: 'verslaan', ott: ['versla', 'verslaat', 'verslaat', 'verslaan', 'verslaan', 'verslaan'], ovt: ['versloeg', 'versloeg', 'versloeg', 'versloegen', 'versloegen', 'versloegen'], vtt_part: 'verslagen', auxiliary: 'hebben', imperative: 'versla', level: 'B2', english: 'to report/cover', strongClass: 6 },
+    onthullen: { infinitive: 'onthullen', ott: ['onthul', 'onthult', 'onthult', 'onthullen', 'onthullen', 'onthullen'], ovt: ['onthulde', 'onthulde', 'onthulde', 'onthulden', 'onthulden', 'onthulden'], vtt_part: 'onthuld', auxiliary: 'hebben', imperative: 'onthul', level: 'B2', english: 'to reveal' },
+    onderzoeken: { infinitive: 'onderzoeken', ott: ['onderzoek', 'onderzoekt', 'onderzoekt', 'onderzoeken', 'onderzoeken', 'onderzoeken'], ovt: ['onderzocht', 'onderzocht', 'onderzocht', 'onderzochten', 'onderzochten', 'onderzochten'], vtt_part: 'onderzocht', auxiliary: 'hebben', imperative: 'onderzoek', level: 'B1', english: 'to investigate' },
+    citeren: { infinitive: 'citeren', ott: ['citeer', 'citeert', 'citeert', 'citeren', 'citeren', 'citeren'], ovt: ['citeerde', 'citeerde', 'citeerde', 'citeerden', 'citeerden', 'citeerden'], vtt_part: 'geciteerd', auxiliary: 'hebben', imperative: 'citeer', level: 'B2', english: 'to quote' },
+    
+    // GOVERNMENT & POLITICS VERBS
+    regeren: { infinitive: 'regeren', ott: ['regeer', 'regeert', 'regeert', 'regeren', 'regeren', 'regeren'], ovt: ['regeerde', 'regeerde', 'regeerde', 'regeerden', 'regeerden', 'regeerden'], vtt_part: 'geregeerd', auxiliary: 'hebben', imperative: 'regeer', level: 'B2', english: 'to govern' },
+    stemmen: { infinitive: 'stemmen', ott: ['stem', 'stemt', 'stemt', 'stemmen', 'stemmen', 'stemmen'], ovt: ['stemde', 'stemde', 'stemde', 'stemden', 'stemden', 'stemden'], vtt_part: 'gestemd', auxiliary: 'hebben', imperative: 'stem', level: 'B1', english: 'to vote' },
+    verkiezen: { infinitive: 'verkiezen', ott: ['verkies', 'verkiest', 'verkiest', 'verkiezen', 'verkiezen', 'verkiezen'], ovt: ['verkoos', 'verkoos', 'verkoos', 'verkozen', 'verkozen', 'verkozen'], vtt_part: 'verkozen', auxiliary: 'hebben', imperative: 'verkies', level: 'B2', english: 'to elect', strongClass: 2 },
+    aftreden: { infinitive: 'aftreden', ott: ['treed af', 'treedt af', 'treedt af', 'treden af', 'treden af', 'treden af'], ovt: ['trad af', 'trad af', 'trad af', 'traden af', 'traden af', 'traden af'], vtt_part: 'afgetreden', auxiliary: 'zijn', imperative: 'treed af', level: 'B2', english: 'to resign', separable: true },
+    aannemen: { infinitive: 'aannemen', ott: ['neem aan', 'neemt aan', 'neemt aan', 'nemen aan', 'nemen aan', 'nemen aan'], ovt: ['nam aan', 'nam aan', 'nam aan', 'namen aan', 'namen aan', 'namen aan'], vtt_part: 'aangenomen', auxiliary: 'hebben', imperative: 'neem aan', level: 'B1', english: 'to adopt/accept', separable: true, strongClass: 4 },
+    weigeren: { infinitive: 'weigeren', ott: ['weiger', 'weigert', 'weigert', 'weigeren', 'weigeren', 'weigeren'], ovt: ['weigerde', 'weigerde', 'weigerde', 'weigerden', 'weigerden', 'weigerden'], vtt_part: 'geweigerd', auxiliary: 'hebben', imperative: 'weiger', level: 'B1', english: 'to refuse' },
+    beloven: { infinitive: 'beloven', ott: ['beloof', 'belooft', 'belooft', 'beloven', 'beloven', 'beloven'], ovt: ['beloofde', 'beloofde', 'beloofde', 'beloofden', 'beloofden', 'beloofden'], vtt_part: 'beloofd', auxiliary: 'hebben', imperative: 'beloof', level: 'A2', english: 'to promise' },
+    decreteren: { infinitive: 'decreteren', ott: ['decreteer', 'decreteert', 'decreteert', 'decreteren', 'decreteren', 'decreteren'], ovt: ['decreteerde', 'decreteerde', 'decreteerde', 'decreteerden', 'decreteerden', 'decreteerden'], vtt_part: 'gedecreteerd', auxiliary: 'hebben', imperative: 'decreteer', level: 'C1', english: 'to decree' },
+    wetgeven: { infinitive: 'wetgeven', ott: ['geef wet', 'geeft wet', 'geeft wet', 'geven wet', 'geven wet', 'geven wet'], ovt: ['gaf wet', 'gaf wet', 'gaf wet', 'gaven wet', 'gaven wet', 'gaven wet'], vtt_part: 'wetgegeven', auxiliary: 'hebben', imperative: 'geef wet', level: 'C2', english: 'to legislate', separable: true, strongClass: 5 },
+    protesteren: { infinitive: 'protesteren', ott: ['protesteer', 'protesteert', 'protesteert', 'protesteren', 'protesteren', 'protesteren'], ovt: ['protesteerde', 'protesteerde', 'protesteerde', 'protesteerden', 'protesteerden', 'protesteerden'], vtt_part: 'geprotesteerd', auxiliary: 'hebben', imperative: 'protesteer', level: 'B2', english: 'to protest' },
+    onderhandelen: { infinitive: 'onderhandelen', ott: ['onderhandel', 'onderhandelt', 'onderhandelt', 'onderhandelen', 'onderhandelen', 'onderhandelen'], ovt: ['onderhandelde', 'onderhandelde', 'onderhandelde', 'onderhandelden', 'onderhandelden', 'onderhandelden'], vtt_part: 'onderhandeld', auxiliary: 'hebben', imperative: 'onderhandel', level: 'C1', english: 'to negotiate' },
+    verbieden: { infinitive: 'verbieden', ott: ['verbied', 'verbiedt', 'verbiedt', 'verbieden', 'verbieden', 'verbieden'], ovt: ['verbood', 'verbood', 'verbood', 'verboden', 'verboden', 'verboden'], vtt_part: 'verboden', auxiliary: 'hebben', imperative: 'verbied', level: 'B2', english: 'to forbid', strongClass: 2 },
+    toestaan: { infinitive: 'toestaan', ott: ['sta toe', 'staat toe', 'staat toe', 'staan toe', 'staan toe', 'staan toe'], ovt: ['stond toe', 'stond toe', 'stond toe', 'stonden toe', 'stonden toe', 'stonden toe'], vtt_part: 'toegestaan', auxiliary: 'hebben', imperative: 'sta toe', level: 'B2', english: 'to permit', separable: true },
+    
+    // COOKING VERBS
+    koken: { infinitive: 'koken', ott: ['kook', 'kookt', 'kookt', 'koken', 'koken', 'koken'], ovt: ['kookte', 'kookte', 'kookte', 'kookten', 'kookten', 'kookten'], vtt_part: 'gekookt', auxiliary: 'hebben', imperative: 'kook', level: 'A1', english: 'to cook' },
+    bakken: { infinitive: 'bakken', ott: ['bak', 'bakt', 'bakt', 'bakken', 'bakken', 'bakken'], ovt: ['bakte', 'bakte', 'bakte', 'bakten', 'bakten', 'bakten'], vtt_part: 'gebakken', auxiliary: 'hebben', imperative: 'bak', level: 'A2', english: 'to bake/fry' },
+    braden: { infinitive: 'braden', ott: ['braad', 'braadt', 'braadt', 'braden', 'braden', 'braden'], ovt: ['braadde', 'braadde', 'braadde', 'braadden', 'braadden', 'braadden'], vtt_part: 'gebraden', auxiliary: 'hebben', imperative: 'braad', level: 'B1', english: 'to roast' },
+    frituren: { infinitive: 'frituren', ott: ['frituur', 'frituurt', 'frituurt', 'frituren', 'frituren', 'frituren'], ovt: ['frituurde', 'frituurde', 'frituurde', 'frituurden', 'frituurden', 'frituurden'], vtt_part: 'gefrituurd', auxiliary: 'hebben', imperative: 'frituur', level: 'B1', english: 'to deep-fry' },
+    snijden: { infinitive: 'snijden', ott: ['snijd', 'snijdt', 'snijdt', 'snijden', 'snijden', 'snijden'], ovt: ['sneed', 'sneed', 'sneed', 'sneden', 'sneden', 'sneden'], vtt_part: 'gesneden', auxiliary: 'hebben', imperative: 'snijd', level: 'A2', english: 'to cut', strongClass: 1 },
+    hakken: { infinitive: 'hakken', ott: ['hak', 'hakt', 'hakt', 'hakken', 'hakken', 'hakken'], ovt: ['hakte', 'hakte', 'hakte', 'hakten', 'hakten', 'hakten'], vtt_part: 'gehakt', auxiliary: 'hebben', imperative: 'hak', level: 'B1', english: 'to chop' },
+    schillen: { infinitive: 'schillen', ott: ['schil', 'schilt', 'schilt', 'schillen', 'schillen', 'schillen'], ovt: ['schilde', 'schilde', 'schilde', 'schilden', 'schilden', 'schilden'], vtt_part: 'geschild', auxiliary: 'hebben', imperative: 'schil', level: 'B1', english: 'to peel' },
+    mengen: { infinitive: 'mengen', ott: ['meng', 'mengt', 'mengt', 'mengen', 'mengen', 'mengen'], ovt: ['mengde', 'mengde', 'mengde', 'mengden', 'mengden', 'mengden'], vtt_part: 'gemengd', auxiliary: 'hebben', imperative: 'meng', level: 'A2', english: 'to mix' },
+    roeren: { infinitive: 'roeren', ott: ['roer', 'roert', 'roert', 'roeren', 'roeren', 'roeren'], ovt: ['roerde', 'roerde', 'roerde', 'roerden', 'roerden', 'roerden'], vtt_part: 'geroerd', auxiliary: 'hebben', imperative: 'roer', level: 'A2', english: 'to stir' },
+    kloppen: { infinitive: 'kloppen', ott: ['klop', 'klopt', 'klopt', 'kloppen', 'kloppen', 'kloppen'], ovt: ['klopte', 'klopte', 'klopte', 'klopten', 'klopten', 'klopten'], vtt_part: 'geklopt', auxiliary: 'hebben', imperative: 'klop', level: 'B1', english: 'to beat/whisk' },
+    gieten: { infinitive: 'gieten', ott: ['giet', 'giet', 'giet', 'gieten', 'gieten', 'gieten'], ovt: ['goot', 'goot', 'goot', 'goten', 'goten', 'goten'], vtt_part: 'gegoten', auxiliary: 'hebben', imperative: 'giet', level: 'B1', english: 'to pour', strongClass: 2 },
+    smoren: { infinitive: 'smoren', ott: ['smoor', 'smoort', 'smoort', 'smoren', 'smoren', 'smoren'], ovt: ['smoorde', 'smoorde', 'smoorde', 'smoorden', 'smoorden', 'smoorden'], vtt_part: 'gesmoord', auxiliary: 'hebben', imperative: 'smoor', level: 'B2', english: 'to stew' },
+    roosteren: { infinitive: 'roosteren', ott: ['rooster', 'roostert', 'roostert', 'roosteren', 'roosteren', 'roosteren'], ovt: ['roosterde', 'roosterde', 'roosterde', 'roosterden', 'roosterden', 'roosterden'], vtt_part: 'geroosterd', auxiliary: 'hebben', imperative: 'rooster', level: 'B1', english: 'to toast/roast' },
+    kruiden: { infinitive: 'kruiden', ott: ['kruid', 'kruidt', 'kruidt', 'kruiden', 'kruiden', 'kruiden'], ovt: ['kruidde', 'kruidde', 'kruidde', 'kruidden', 'kruidden', 'kruidden'], vtt_part: 'gekruid', auxiliary: 'hebben', imperative: 'kruid', level: 'B1', english: 'to season' },
+    garneren: { infinitive: 'garneren', ott: ['garneer', 'garneert', 'garneert', 'garneren', 'garneren', 'garneren'], ovt: ['garneerde', 'garneerde', 'garneerde', 'garneerden', 'garneerden', 'garneerden'], vtt_part: 'gegarneerd', auxiliary: 'hebben', imperative: 'garneer', level: 'B2', english: 'to garnish' },
+    opdienen: { infinitive: 'opdienen', ott: ['dien op', 'dient op', 'dient op', 'dienen op', 'dienen op', 'dienen op'], ovt: ['diende op', 'diende op', 'diende op', 'dienden op', 'dienden op', 'dienden op'], vtt_part: 'opgediend', auxiliary: 'hebben', imperative: 'dien op', level: 'B1', english: 'to serve', separable: true },
+    
+    // ADDITIONAL GENERAL VERBS (B2-C2 Level)
+    adviseren: { infinitive: 'adviseren', ott: ['adviseer', 'adviseert', 'adviseert', 'adviseren', 'adviseren', 'adviseren'], ovt: ['adviseerde', 'adviseerde', 'adviseerde', 'adviseerden', 'adviseerden', 'adviseerden'], vtt_part: 'geadviseerd', auxiliary: 'hebben', imperative: 'adviseer', level: 'B2', english: 'to advise' },
+    waarschuwen: { infinitive: 'waarschuwen', ott: ['waarschuw', 'waarschuwt', 'waarschuwt', 'waarschuwen', 'waarschuwen', 'waarschuwen'], ovt: ['waarschuwde', 'waarschuwde', 'waarschuwde', 'waarschuwden', 'waarschuwden', 'waarschuwden'], vtt_part: 'gewaarschuwd', auxiliary: 'hebben', imperative: 'waarschuw', level: 'B2', english: 'to warn' },
+    bedreigen: { infinitive: 'bedreigen', ott: ['bedreig', 'bedreigt', 'bedreigt', 'bedreigen', 'bedreigen', 'bedreigen'], ovt: ['bedreigde', 'bedreigde', 'bedreigde', 'bedreigden', 'bedreigden', 'bedreigden'], vtt_part: 'bedreigd', auxiliary: 'hebben', imperative: 'bedreig', level: 'B2', english: 'to threaten' },
+    vervangen: { infinitive: 'vervangen', ott: ['vervang', 'vervangt', 'vervangt', 'vervangen', 'vervangen', 'vervangen'], ovt: ['verving', 'verving', 'verving', 'vervingen', 'vervingen', 'vervingen'], vtt_part: 'vervangen', auxiliary: 'hebben', imperative: 'vervang', level: 'B2', english: 'to replace' },
+    beïnvloeden: { infinitive: 'beïnvloeden', ott: ['beïnvloed', 'beïnvloedt', 'beïnvloedt', 'beïnvloeden', 'beïnvloeden', 'beïnvloeden'], ovt: ['beïnvloedde', 'beïnvloedde', 'beïnvloedde', 'beïnvloedden', 'beïnvloedden', 'beïnvloedden'], vtt_part: 'beïnvloed', auxiliary: 'hebben', imperative: 'beïnvloed', level: 'B2', english: 'to influence' },
+    bevestigen: { infinitive: 'bevestigen', ott: ['bevestig', 'bevestigt', 'bevestigt', 'bevestigen', 'bevestigen', 'bevestigen'], ovt: ['bevestigde', 'bevestigde', 'bevestigde', 'bevestigden', 'bevestigden', 'bevestigden'], vtt_part: 'bevestigd', auxiliary: 'hebben', imperative: 'bevestig', level: 'B2', english: 'to confirm' },
+    ontkennen: { infinitive: 'ontkennen', ott: ['ontken', 'ontkent', 'ontkent', 'ontkennen', 'ontkennen', 'ontkennen'], ovt: ['ontkende', 'ontkende', 'ontkende', 'ontkenden', 'ontkenden', 'ontkenden'], vtt_part: 'ontkend', auxiliary: 'hebben', imperative: 'ontken', level: 'B2', english: 'to deny' },
+    analyseren: { infinitive: 'analyseren', ott: ['analyseer', 'analyseert', 'analyseert', 'analyseren', 'analyseren', 'analyseren'], ovt: ['analyseerde', 'analyseerde', 'analyseerde', 'analyseerden', 'analyseerden', 'analyseerden'], vtt_part: 'geanalyseerd', auxiliary: 'hebben', imperative: 'analyseer', level: 'B2', english: 'to analyze' },
+    evalueren: { infinitive: 'evalueren', ott: ['evalueer', 'evalueert', 'evalueert', 'evalueren', 'evalueren', 'evalueren'], ovt: ['evalueerde', 'evalueerde', 'evalueerde', 'evalueerden', 'evalueerden', 'evalueerden'], vtt_part: 'geëvalueerd', auxiliary: 'hebben', imperative: 'evalueer', level: 'B2', english: 'to evaluate' },
+    implementeren: { infinitive: 'implementeren', ott: ['implementeer', 'implementeert', 'implementeert', 'implementeren', 'implementeren', 'implementeren'], ovt: ['implementeerde', 'implementeerde', 'implementeerde', 'implementeerden', 'implementeerden', 'implementeerden'], vtt_part: 'geïmplementeerd', auxiliary: 'hebben', imperative: 'implementeer', level: 'C1', english: 'to implement' },
+    sanctioneren: { infinitive: 'sanctioneren', ott: ['sanctioneer', 'sanctioneert', 'sanctioneert', 'sanctioneren', 'sanctioneren', 'sanctioneren'], ovt: ['sanctioneerde', 'sanctioneerde', 'sanctioneerde', 'sanctioneerden', 'sanctioneerden', 'sanctioneerden'], vtt_part: 'gesanctioneerd', auxiliary: 'hebben', imperative: 'sanctioneer', level: 'C1', english: 'to sanction' },
+    compenseren: { infinitive: 'compenseren', ott: ['compenseer', 'compenseert', 'compenseert', 'compenseren', 'compenseren', 'compenseren'], ovt: ['compenseerde', 'compenseerde', 'compenseerde', 'compenseerden', 'compenseerden', 'compenseerden'], vtt_part: 'gecompenseerd', auxiliary: 'hebben', imperative: 'compenseer', level: 'C1', english: 'to compensate' },
+    manipuleren: { infinitive: 'manipuleren', ott: ['manipuleer', 'manipuleert', 'manipuleert', 'manipuleren', 'manipuleren', 'manipuleren'], ovt: ['manipuleerde', 'manipuleerde', 'manipuleerde', 'manipuleerden', 'manipuleerden', 'manipuleerden'], vtt_part: 'gemanipuleerd', auxiliary: 'hebben', imperative: 'manipuleer', level: 'C1', english: 'to manipulate' },
+    speculeren: { infinitive: 'speculeren', ott: ['speculeer', 'speculeert', 'speculeert', 'speculeren', 'speculeren', 'speculeren'], ovt: ['speculeerde', 'speculeerde', 'speculeerde', 'speculeerden', 'speculeerden', 'speculeerden'], vtt_part: 'gespeculeerd', auxiliary: 'hebben', imperative: 'speculeer', level: 'C1', english: 'to speculate' },
+    escaleren: { infinitive: 'escaleren', ott: ['escaleer', 'escaleert', 'escaleert', 'escaleren', 'escaleren', 'escaleren'], ovt: ['escaleerde', 'escaleerde', 'escaleerde', 'escaleerden', 'escaleerden', 'escaleerden'], vtt_part: 'geëscaleerd', auxiliary: 'zijn', imperative: 'escaleer', level: 'C1', english: 'to escalate' },
+    deëscaleren: { infinitive: 'deëscaleren', ott: ['deëscaleer', 'deëscaleert', 'deëscaleert', 'deëscaleren', 'deëscaleren', 'deëscaleren'], ovt: ['deëscaleerde', 'deëscaleerde', 'deëscaleerde', 'deëscaleerden', 'deëscaleerden', 'deëscaleerden'], vtt_part: 'gedeëscaleerd', auxiliary: 'zijn', imperative: 'deëscaleer', level: 'C1', english: 'to de-escalate' },
+    consolideren: { infinitive: 'consolideren', ott: ['consolideer', 'consolideert', 'consolideert', 'consolideren', 'consolideren', 'consolideren'], ovt: ['consolideerde', 'consolideerde', 'consolideerde', 'consolideerden', 'consolideerden', 'consolideerden'], vtt_part: 'geconsolideerd', auxiliary: 'hebben', imperative: 'consolideer', level: 'C2', english: 'to consolidate' },
+    democratiseren: { infinitive: 'democratiseren', ott: ['democratiseer', 'democratiseert', 'democratiseert', 'democratiseren', 'democratiseren', 'democratiseren'], ovt: ['democratiseerde', 'democratiseerde', 'democratiseerde', 'democratiseerden', 'democratiseerden', 'democratiseerden'], vtt_part: 'gedemocratiseerd', auxiliary: 'hebben', imperative: 'democratiseer', level: 'C2', english: 'to democratize' },
+    nationaliseren: { infinitive: 'nationaliseren', ott: ['nationaliseer', 'nationaliseert', 'nationaliseert', 'nationaliseren', 'nationaliseren', 'nationaliseren'], ovt: ['nationaliseerde', 'nationaliseerde', 'nationaliseerde', 'nationaliseerden', 'nationaliseerden', 'nationaliseerden'], vtt_part: 'genationaliseerd', auxiliary: 'hebben', imperative: 'nationaliseer', level: 'C2', english: 'to nationalize' },
+    privatiseren: { infinitive: 'privatiseren', ott: ['privatiseer', 'privatiseert', 'privatiseert', 'privatiseren', 'privatiseren', 'privatiseren'], ovt: ['privatiseerde', 'privatiseerde', 'privatiseerde', 'privatiseerden', 'privatiseerden', 'privatiseerden'], vtt_part: 'geprivatiseerd', auxiliary: 'hebben', imperative: 'privatiseer', level: 'C2', english: 'to privatize' },
+    bureaucratiseren: { infinitive: 'bureaucratiseren', ott: ['bureaucratiseer', 'bureaucratiseert', 'bureaucratiseert', 'bureaucratiseren', 'bureaucratiseren', 'bureaucratiseren'], ovt: ['bureaucratiseerde', 'bureaucratiseerde', 'bureaucratiseerde', 'bureaucratiseerden', 'bureaucratiseerden', 'bureaucratiseerden'], vtt_part: 'gebureaucratiseerd', auxiliary: 'hebben', imperative: 'bureaucratiseer', level: 'C2', english: 'to bureaucratize' },
+    
+    // MORE EVERYDAY & NEWS VERBS
+    gebeuren: { infinitive: 'gebeuren', ott: ['gebeur', 'gebeurt', 'gebeurt', 'gebeuren', 'gebeuren', 'gebeuren'], ovt: ['gebeurde', 'gebeurde', 'gebeurde', 'gebeurden', 'gebeurden', 'gebeurden'], vtt_part: 'gebeurd', auxiliary: 'zijn', imperative: 'gebeur', level: 'A2', english: 'to happen' },
+    ontstaan: { infinitive: 'ontstaan', ott: ['ontsta', 'ontstaat', 'ontstaat', 'ontstaan', 'ontstaan', 'ontstaan'], ovt: ['ontstond', 'ontstond', 'ontstond', 'ontstonden', 'ontstonden', 'ontstonden'], vtt_part: 'ontstaan', auxiliary: 'zijn', imperative: 'ontsta', level: 'B1', english: 'to arise/emerge' },
+    verhogen: { infinitive: 'verhogen', ott: ['verhoog', 'verhoogt', 'verhoogt', 'verhogen', 'verhogen', 'verhogen'], ovt: ['verhoogde', 'verhoogde', 'verhoogde', 'verhoogden', 'verhoogden', 'verhoogden'], vtt_part: 'verhoogd', auxiliary: 'hebben', imperative: 'verhoog', level: 'B1', english: 'to increase' },
+    verlagen: { infinitive: 'verlagen', ott: ['verlaag', 'verlaagt', 'verlaagt', 'verlagen', 'verlagen', 'verlagen'], ovt: ['verlaagde', 'verlaagde', 'verlaagde', 'verlaagden', 'verlaagden', 'verlaagden'], vtt_part: 'verlaagd', auxiliary: 'hebben', imperative: 'verlaag', level: 'B1', english: 'to lower' },
+    verhuren: { infinitive: 'verhuren', ott: ['verhuur', 'verhuurt', 'verhuurt', 'verhuren', 'verhuren', 'verhuren'], ovt: ['verhuurde', 'verhuurde', 'verhuurde', 'verhuurden', 'verhuurden', 'verhuurden'], vtt_part: 'verhuurd', auxiliary: 'hebben', imperative: 'verhuur', level: 'B1', english: 'to rent out' },
+    huren: { infinitive: 'huren', ott: ['huur', 'huurt', 'huurt', 'huren', 'huren', 'huren'], ovt: ['huurde', 'huurde', 'huurde', 'huurden', 'huurden', 'huurden'], vtt_part: 'gehuurd', auxiliary: 'hebben', imperative: 'huur', level: 'B1', english: 'to rent/hire' },
+    investeren: { infinitive: 'investeren', ott: ['investeer', 'investeert', 'investeert', 'investeren', 'investeren', 'investeren'], ovt: ['investeerde', 'investeerde', 'investeerde', 'investeerden', 'investeerden', 'investeerden'], vtt_part: 'geïnvesteerd', auxiliary: 'hebben', imperative: 'investeer', level: 'B2', english: 'to invest' },
+    exporteren: { infinitive: 'exporteren', ott: ['exporteer', 'exporteert', 'exporteert', 'exporteren', 'exporteren', 'exporteren'], ovt: ['exporteerde', 'exporteerde', 'exporteerde', 'exporteerden', 'exporteerden', 'exporteerden'], vtt_part: 'geëxporteerd', auxiliary: 'hebben', imperative: 'exporteer', level: 'B2', english: 'to export' },
+    importeren: { infinitive: 'importeren', ott: ['importeer', 'importeert', 'importeert', 'importeren', 'importeren', 'importeren'], ovt: ['importeerde', 'importeerde', 'importeerde', 'importeerden', 'importeerden', 'importeerden'], vtt_part: 'geïmporteerd', auxiliary: 'hebben', imperative: 'importeer', level: 'B2', english: 'to import' },
+    produceren: { infinitive: 'produceren', ott: ['produceer', 'produceert', 'produceert', 'produceren', 'produceren', 'produceren'], ovt: ['produceerde', 'produceerde', 'produceerde', 'produceerden', 'produceerden', 'produceerden'], vtt_part: 'geproduceerd', auxiliary: 'hebben', imperative: 'produceer', level: 'B1', english: 'to produce' },
+    consumeren: { infinitive: 'consumeren', ott: ['consumeer', 'consumeert', 'consumeert', 'consumeren', 'consumeren', 'consumeren'], ovt: ['consumeerde', 'consumeerde', 'consumeerde', 'consumeerden', 'consumeerden', 'consumeerden'], vtt_part: 'geconsumeerd', auxiliary: 'hebben', imperative: 'consumeer', level: 'B2', english: 'to consume' },
+    distribueren: { infinitive: 'distribueren', ott: ['distribueer', 'distribueert', 'distribueert', 'distribueren', 'distribueren', 'distribueren'], ovt: ['distribueerde', 'distribueerde', 'distribueerde', 'distribueerden', 'distribueerden', 'distribueerden'], vtt_part: 'gedistribueerd', auxiliary: 'hebben', imperative: 'distribueer', level: 'C1', english: 'to distribute' },
+    transporteren: { infinitive: 'transporteren', ott: ['transporteer', 'transporteert', 'transporteert', 'transporteren', 'transporteren', 'transporteren'], ovt: ['transporteerde', 'transporteerde', 'transporteerde', 'transporteerden', 'transporteerden', 'transporteerden'], vtt_part: 'getransporteerd', auxiliary: 'hebben', imperative: 'transporteer', level: 'B1', english: 'to transport' },
+    evacueren: { infinitive: 'evacueren', ott: ['evacueer', 'evacueert', 'evacueert', 'evacueren', 'evacueren', 'evacueren'], ovt: ['evacueerde', 'evacueerde', 'evacueerde', 'evacueerden', 'evacueerden', 'evacueerden'], vtt_part: 'geëvacueerd', auxiliary: 'zijn', imperative: 'evacueer', level: 'B2', english: 'to evacuate' },
+    demonstreren: { infinitive: 'demonstreren', ott: ['demonstreer', 'demonstreert', 'demonstreert', 'demonstreren', 'demonstreren', 'demonstreren'], ovt: ['demonstreerde', 'demonstreerde', 'demonstreerde', 'demonstreerden', 'demonstreerden', 'demonstreerden'], vtt_part: 'gedemonstreerd', auxiliary: 'hebben', imperative: 'demonstreer', level: 'B2', english: 'to demonstrate' },
+    manifesteren: { infinitive: 'manifesteren', ott: ['manifesteer', 'manifesteert', 'manifesteert', 'manifesteren', 'manifesteren', 'manifesteren'], ovt: ['manifesteerde', 'manifesteerde', 'manifesteerde', 'manifesteerden', 'manifesteerden', 'manifesteerden'], vtt_part: 'gemanifesteerd', auxiliary: 'hebben', imperative: 'manifesteer', level: 'C1', english: 'to manifest' },
+    mobiliseren: { infinitive: 'mobiliseren', ott: ['mobiliseer', 'mobiliseert', 'mobiliseert', 'mobiliseren', 'mobiliseren', 'mobiliseren'], ovt: ['mobiliseerde', 'mobiliseerde', 'mobiliseerde', 'mobiliseerden', 'mobiliseerden', 'mobiliseerden'], vtt_part: 'gemobiliseerd', auxiliary: 'hebben', imperative: 'mobiliseer', level: 'C1', english: 'to mobilize' },
+    demobiliseren: { infinitive: 'demobiliseren', ott: ['demobiliseer', 'demobiliseert', 'demobiliseert', 'demobiliseren', 'demobiliseren', 'demobiliseren'], ovt: ['demobiliseerde', 'demobiliseerde', 'demobiliseerde', 'demobiliseerden', 'demobiliseerden', 'demobiliseerden'], vtt_part: 'gedemobiliseerd', auxiliary: 'hebben', imperative: 'demobiliseer', level: 'C1', english: 'to demobilize' },
+    ratificeren: { infinitive: 'ratificeren', ott: ['ratificeer', 'ratificeert', 'ratificeert', 'ratificeren', 'ratificeren', 'ratificeren'], ovt: ['ratificeerde', 'ratificeerde', 'ratificeerde', 'ratificeerden', 'ratificeerden', 'ratificeerden'], vtt_part: 'geratificeerd', auxiliary: 'hebben', imperative: 'ratificeer', level: 'C2', english: 'to ratify' },
+    annuleren: { infinitive: 'annuleren', ott: ['annuleer', 'annuleert', 'annuleert', 'annuleren', 'annuleren', 'annuleren'], ovt: ['annuleerde', 'annuleerde', 'annuleerde', 'annuleerden', 'annuleerden', 'annuleerden'], vtt_part: 'geannuleerd', auxiliary: 'hebben', imperative: 'annuleer', level: 'B2', english: 'to cancel' },
+    blokkeren: { infinitive: 'blokkeren', ott: ['blokkeer', 'blokkeert', 'blokkeert', 'blokkeren', 'blokkeren', 'blokkeren'], ovt: ['blokkeerde', 'blokkeerde', 'blokkeerde', 'blokkeerden', 'blokkeerden', 'blokkeerden'], vtt_part: 'geblokkeerd', auxiliary: 'hebben', imperative: 'blokkeer', level: 'B2', english: 'to block' },
+    deblokkeren: { infinitive: 'deblokkeren', ott: ['deblokkeer', 'deblokkeert', 'deblokkeert', 'deblokkeren', 'deblokkeren', 'deblokkeren'], ovt: ['deblokkeerde', 'deblokkeerde', 'deblokkeerde', 'deblokkeerden', 'deblokkeerden', 'deblokkeerden'], vtt_part: 'gedeblokkeerd', auxiliary: 'hebben', imperative: 'deblokkeer', level: 'B2', english: 'to unblock' },
+    
+    // MORE POLITICS & LAW
+    arresteren: { infinitive: 'arresteren', ott: ['arresteer', 'arresteert', 'arresteert', 'arresteren', 'arresteren', 'arresteren'], ovt: ['arresteerde', 'arresteerde', 'arresteerde', 'arresteerden', 'arresteerden', 'arresteerden'], vtt_part: 'gearresteerd', auxiliary: 'hebben', imperative: 'arresteer', level: 'B2', english: 'to arrest' },
+    bevrijden: { infinitive: 'bevrijden', ott: ['bevrijd', 'bevrijdt', 'bevrijdt', 'bevrijden', 'bevrijden', 'bevrijden'], ovt: ['bevrijdde', 'bevrijdde', 'bevrijdde', 'bevrijdden', 'bevrijdden', 'bevrijdden'], vtt_part: 'bevrijd', auxiliary: 'hebben', imperative: 'bevrijd', level: 'B2', english: 'to free' },
+    veroordelen: { infinitive: 'veroordelen', ott: ['veroordeel', 'veroordeelt', 'veroordeelt', 'veroordelen', 'veroordelen', 'veroordelen'], ovt: ['veroordeelde', 'veroordeelde', 'veroordeelde', 'veroordeelden', 'veroordeelden', 'veroordeelden'], vtt_part: 'veroordeeld', auxiliary: 'hebben', imperative: 'veroordeel', level: 'B2', english: 'to convict' },
+    vrijspreken: { infinitive: 'vrijspreken', ott: ['spreek vrij', 'spreekt vrij', 'spreekt vrij', 'spreken vrij', 'spreken vrij', 'spreken vrij'], ovt: ['sprak vrij', 'sprak vrij', 'sprak vrij', 'spraken vrij', 'spraken vrij', 'spraken vrij'], vtt_part: 'vrijgesproken', auxiliary: 'hebben', imperative: 'spreek vrij', level: 'C1', english: 'to acquit', separable: true },
+    vervolgen: { infinitive: 'vervolgen', ott: ['vervolg', 'vervolgt', 'vervolgt', 'vervolgen', 'vervolgen', 'vervolgen'], ovt: ['vervolgde', 'vervolgde', 'vervolgde', 'vervolgden', 'vervolgden', 'vervolgden'], vtt_part: 'vervolgd', auxiliary: 'hebben', imperative: 'vervolg', level: 'B2', english: 'to prosecute' },
+    amnestieren: { infinitive: 'amnestieren', ott: ['amstieer', 'amnestieert', 'amnestieert', 'amnestieren', 'amnestieren', 'amnestieren'], ovt: ['amstieerde', 'amnistieerde', 'amnistieerde', 'amnesteerden', 'amnesteerden', 'amnesteerden'], vtt_part: 'geamnistieerd', auxiliary: 'hebben', imperative: 'amnistieer', level: 'C2', english: 'to grant amnesty' },
+    corrupteren: { infinitive: 'corrupteren', ott: ['corrumpeer', 'corrumpeert', 'corrumpeert', 'corrupteren', 'corrupteren', 'corrupteren'], ovt: ['corrumpeerde', 'corrumpeerde', 'corrumpeerde', 'corrumpeerden', 'corrumpeerden', 'corrumpeerden'], vtt_part: 'gecorrumpeerd', auxiliary: 'hebben', imperative: 'corrumpeer', level: 'C1', english: 'to corrupt' },
+    
+    // MORE MILITARY
+    inzetten: { infinitive: 'inzetten', ott: ['zet in', 'zet in', 'zet in', 'zetten in', 'zetten in', 'zetten in'], ovt: ['zette in', 'zette in', 'zette in', 'zetten in', 'zetten in', 'zetten in'], vtt_part: 'ingezet', auxiliary: 'hebben', imperative: 'zet in', level: 'B2', english: 'to deploy', separable: true },
+    terugtrekken: { infinitive: 'terugtrekken', ott: ['trek terug', 'trekt terug', 'trekt terug', 'trekken terug', 'trekken terug', 'trekken terug'], ovt: ['trok terug', 'trok terug', 'trok terug', 'trokken terug', 'trokken terug', 'trokken terug'], vtt_part: 'teruggetrokken', auxiliary: 'hebben', imperative: 'trek terug', level: 'B2', english: 'to withdraw', separable: true },
+    verschieten: { infinitive: 'verschieten', ott: ['verschiet', 'verschiet', 'verschiet', 'verschieten', 'verschieten', 'verschieten'], ovt: ['verschoot', 'verschoot', 'verschoot', 'verschoten', 'verschoten', 'verschoten'], vtt_part: 'verschoten', auxiliary: 'hebben', imperative: 'verschiet', level: 'B2', english: 'to fire/shoot', strongClass: 2 },
+    recruteren: { infinitive: 'recruteren', ott: ['recruteer', 'recruteert', 'recruteert', 'recruteren', 'recruteren', 'recruteren'], ovt: ['recruteerde', 'recruteerde', 'recruteerde', 'recruteerden', 'recruteerden', 'recruteerden'], vtt_part: 'gerecruteerd', auxiliary: 'hebben', imperative: 'recruteer', level: 'C1', english: 'to recruit' },
+    deserteren: { infinitive: 'deserteren', ott: ['deserteer', 'deserteert', 'deserteert', 'deserteren', 'deserteren', 'deserteren'], ovt: ['deserteerde', 'deserteerde', 'deserteerde', 'deserteerden', 'deserteerden', 'deserteerden'], vtt_part: 'gedeserteerd', auxiliary: 'zijn', imperative: 'deserteer', level: 'C1', english: 'to desert' },
+    belegeren: { infinitive: 'belegeren', ott: ['beleger', 'belegert', 'belegert', 'belegeren', 'belegeren', 'belegeren'], ovt: ['belegerde', 'belegerde', 'belegerde', 'belegerden', 'belegerden', 'belegerden'], vtt_part: 'belegerd', auxiliary: 'hebben', imperative: 'beleger', level: 'C1', english: 'to besiege' },
+    
+    // MORE NEWS & MEDIA
+    lanceren: { infinitive: 'lanceren', ott: ['lanceer', 'lanceert', 'lanceert', 'lanceren', 'lanceren', 'lanceren'], ovt: ['lanceerde', 'lanceerde', 'lanceerde', 'lanceerden', 'lanceerden', 'lanceerden'], vtt_part: 'gelanceerd', auxiliary: 'hebben', imperative: 'lanceer', level: 'B2', english: 'to launch' },
+    aankondigen: { infinitive: 'aankondigen', ott: ['kondig aan', 'kondigt aan', 'kondigt aan', 'kondigen aan', 'kondigen aan', 'kondigen aan'], ovt: ['kondigde aan', 'kondigde aan', 'kondigde aan', 'kondigden aan', 'kondigden aan', 'kondigden aan'], vtt_part: 'aangekondigd', auxiliary: 'hebben', imperative: 'kondig aan', level: 'B2', english: 'to announce', separable: true },
+    bekendmaken: { infinitive: 'bekendmaken', ott: ['maak bekend', 'maakt bekend', 'maakt bekend', 'maken bekend', 'maken bekend', 'maken bekend'], ovt: ['maakte bekend', 'maakte bekend', 'maakte bekend', 'maakten bekend', 'maakten bekend', 'maakten bekend'], vtt_part: 'bekendgemaakt', auxiliary: 'hebben', imperative: 'maak bekend', level: 'B2', english: 'to announce/disclose', separable: true },
+    censureren: { infinitive: 'censureren', ott: ['censureer', 'censureert', 'censureert', 'censureren', 'censureren', 'censureren'], ovt: ['censureerde', 'censureerde', 'censureerde', 'censureerden', 'censureerden', 'censureerden'], vtt_part: 'gecensureerd', auxiliary: 'hebben', imperative: 'censureer', level: 'C1', english: 'to censor' },
+    documenteren: { infinitive: 'documenteren', ott: ['documenteer', 'documenteert', 'documenteert', 'documenteren', 'documenteren', 'documenteren'], ovt: ['documenteerde', 'documenteerde', 'documenteerde', 'documenteerden', 'documenteerden', 'documenteerden'], vtt_part: 'gedocumenteerd', auxiliary: 'hebben', imperative: 'documenteer', level: 'B2', english: 'to document' },
+    verifiëren: { infinitive: 'verifiëren', ott: ['verifieer', 'verifieert', 'verifieert', 'verifiëren', 'verifiëren', 'verifiëren'], ovt: ['verifieerde', 'verifieerde', 'verifieerde', 'verifieerden', 'verifieerden', 'verifieerden'], vtt_part: 'geverifieerd', auxiliary: 'hebben', imperative: 'verifieer', level: 'C1', english: 'to verify' },
+    
+    // MORE COOKING
+    marineren: { infinitive: 'marineren', ott: ['marineer', 'marineert', 'marineert', 'marineren', 'marineren', 'marineren'], ovt: ['marineerde', 'marineerde', 'marineerde', 'marineerden', 'marineerden', 'marineerden'], vtt_part: 'gemarineerd', auxiliary: 'hebben', imperative: 'marineer', level: 'B2', english: 'to marinate' },
+    paneren: { infinitive: 'paneren', ott: ['paneer', 'paneert', 'paneert', 'paneren', 'paneren', 'paneren'], ovt: ['paneerde', 'paneerde', 'paneerde', 'paneerden', 'paneerden', 'paneerden'], vtt_part: 'gepaneerd', auxiliary: 'hebben', imperative: 'paneer', level: 'B2', english: 'to bread/coat' },
+    blancheren: { infinitive: 'blancheren', ott: ['blancheer', 'blancheert', 'blancheert', 'blancheren', 'blancheren', 'blancheren'], ovt: ['blancheerde', 'blancheerde', 'blancheerde', 'blancheerden', 'blancheerden', 'blancheerden'], vtt_part: 'geblancheerd', auxiliary: 'hebben', imperative: 'blancheer', level: 'B2', english: 'to blanch' },
+    reduceren: { infinitive: 'reduceren', ott: ['reduceer', 'reduceert', 'reduceert', 'reduceren', 'reduceren', 'reduceren'], ovt: ['reduceerde', 'reduceerde', 'reduceerde', 'reduceerden', 'reduceerden', 'reduceerden'], vtt_part: 'gereduceerd', auxiliary: 'hebben', imperative: 'reduceer', level: 'B2', english: 'to reduce' },
+    flamberen: { infinitive: 'flamberen', ott: ['flambeer', 'flambeert', 'flambeert', 'flamberen', 'flamberen', 'flamberen'], ovt: ['flambeerde', 'flambeerde', 'flambeerde', 'flambeerden', 'flambeerden', 'flambeerden'], vtt_part: 'geflambeerd', auxiliary: 'hebben', imperative: 'flambeer', level: 'C1', english: 'to flambé' },
+    pureren: { infinitive: 'pureren', ott: ['pureer', 'pureert', 'pureert', 'pureren', 'pureren', 'pureren'], ovt: ['pureerde', 'pureerde', 'pureerde', 'pureerden', 'pureerden', 'pureerden'], vtt_part: 'gepureerd', auxiliary: 'hebben', imperative: 'pureer', level: 'B1', english: 'to puree' },
+    raspen: { infinitive: 'raspen', ott: ['rasp', 'raspt', 'raspt', 'raspen', 'raspen', 'raspen'], ovt: ['raspte', 'raspte', 'raspte', 'raspten', 'raspten', 'raspten'], vtt_part: 'geraspt', auxiliary: 'hebben', imperative: 'rasp', level: 'B1', english: 'to grate' },
+    zeven: { infinitive: 'zeven', ott: ['zeef', 'zeeft', 'zeeft', 'zeven', 'zeven', 'zeven'], ovt: ['zeefde', 'zeefde', 'zeefde', 'zeefden', 'zeefden', 'zeefden'], vtt_part: 'gezeefd', auxiliary: 'hebben', imperative: 'zeef', level: 'B1', english: 'to sift' },
+    fermenteren: { infinitive: 'fermenteren', ott: ['fermenteer', 'fermenteert', 'fermenteert', 'fermenteren', 'fermenteren', 'fermenteren'], ovt: ['fermenteerde', 'fermenteerde', 'fermenteerde', 'fermenteerden', 'fermenteerden', 'fermenteerden'], vtt_part: 'gefermenteerd', auxiliary: 'zijn', imperative: 'fermenteer', level: 'C1', english: 'to ferment' },
+    conserveren: { infinitive: 'conserveren', ott: ['conserveer', 'conserveert', 'conserveert', 'conserveren', 'conserveren', 'conserveren'], ovt: ['conserveerde', 'conserveerde', 'conserveerde', 'conserveerden', 'conserveerden', 'conserveerden'], vtt_part: 'geconserveerd', auxiliary: 'hebben', imperative: 'conserveer', level: 'B2', english: 'to preserve' },
+    
+    // MORE GENERAL HIGH-LEVEL VERBS
+    introduceren: { infinitive: 'introduceren', ott: ['introduceer', 'introduceert', 'introduceert', 'introduceren', 'introduceren', 'introduceren'], ovt: ['introduceerde', 'introduceerde', 'introduceerde', 'introduceerden', 'introduceerden', 'introduceerden'], vtt_part: 'geïntroduceerd', auxiliary: 'hebben', imperative: 'introduceer', level: 'B2', english: 'to introduce' },
+    elimineren: { infinitive: 'elimineren', ott: ['elimineer', 'elimineert', 'elimineert', 'elimineren', 'elimineren', 'elimineren'], ovt: ['elimineerde', 'elimineerde', 'elimineerde', 'elimineerden', 'elimineerden', 'elimineerden'], vtt_part: 'geëlimineerd', auxiliary: 'hebben', imperative: 'elimineer', level: 'B2', english: 'to eliminate' },
+    faciliteren: { infinitive: 'faciliteren', ott: ['faciliteer', 'faciliteert', 'faciliteert', 'faciliteren', 'faciliteren', 'faciliteren'], ovt: ['faciliteerde', 'faciliteerde', 'faciliteerde', 'faciliteerden', 'faciliteerden', 'faciliteerden'], vtt_part: 'gefaciliteerd', auxiliary: 'hebben', imperative: 'faciliteer', level: 'C1', english: 'to facilitate' },
+    coördineren: { infinitive: 'coördineren', ott: ['coördineer', 'coördineert', 'coördineert', 'coördineren', 'coördineren', 'coördineren'], ovt: ['coördineerde', 'coördineerde', 'coördineerde', 'coördineerden', 'coördineerden', 'coördineerden'], vtt_part: 'gecoördineerd', auxiliary: 'hebben', imperative: 'coördineer', level: 'B2', english: 'to coordinate' },
+    delegeren: { infinitive: 'delegeren', ott: ['delegeer', 'delegeert', 'delegeert', 'delegeren', 'delegeren', 'delegeren'], ovt: ['delegeerde', 'delegeerde', 'delegeerde', 'delegeerden', 'delegeerden', 'delegeerden'], vtt_part: 'gedelegeerd', auxiliary: 'hebben', imperative: 'delegeer', level: 'C1', english: 'to delegate' },
+    funderen: { infinitive: 'funderen', ott: ['fundeer', 'fundeert', 'fundeert', 'funderen', 'funderen', 'funderen'], ovt: ['fundeerde', 'fundeerde', 'fundeerde', 'fundeerden', 'fundeerden', 'fundeerden'], vtt_part: 'gefundeerd', auxiliary: 'hebben', imperative: 'fundeer', level: 'C1', english: 'to found' },
+    legitimeren: { infinitive: 'legitimeren', ott: ['legitimeer', 'legitimeert', 'legitimeert', 'legitimeren', 'legitimeren', 'legitimeren'], ovt: ['legitimeerde', 'legitimeerde', 'legitimeerde', 'legitimeerden', 'legitimeerden', 'legitimeerden'], vtt_part: 'gelegitimeerd', auxiliary: 'hebben', imperative: 'legitimeer', level: 'C2', english: 'to legitimize' },
+    marginaliseren: { infinitive: 'marginaliseren', ott: ['marginaliseer', 'marginaliseert', 'marginaliseert', 'marginaliseren', 'marginaliseren', 'marginaliseren'], ovt: ['marginaliseerde', 'marginaliseerde', 'marginaliseerde', 'marginaliseerden', 'marginaliseerden', 'marginaliseerden'], vtt_part: 'gemarginaliseerd', auxiliary: 'hebben', imperative: 'marginaliseer', level: 'C2', english: 'to marginalize' },
+    neutraliseren: { infinitive: 'neutraliseren', ott: ['neutraliseer', 'neutraliseert', 'neutraliseert', 'neutraliseren', 'neutraliseren', 'neutraliseren'], ovt: ['neutraliseerde', 'neutraliseerde', 'neutraliseerde', 'neutraliseerden', 'neutraliseerden', 'neutraliseerden'], vtt_part: 'geneutraliseerd', auxiliary: 'hebben', imperative: 'neutraliseer', level: 'C1', english: 'to neutralize' },
+    optimaliseren: { infinitive: 'optimaliseren', ott: ['optimaliseer', 'optimaliseert', 'optimaliseert', 'optimaliseren', 'optimaliseren', 'optimaliseren'], ovt: ['optimaliseerde', 'optimaliseerde', 'optimaliseerde', 'optimaliseerden', 'optimaliseerden', 'optimaliseerden'], vtt_part: 'geoptimaliseerd', auxiliary: 'hebben', imperative: 'optimaliseer', level: 'C1', english: 'to optimize' },
+    polariseren: { infinitive: 'polariseren', ott: ['polariseer', 'polariseert', 'polariseert', 'polariseren', 'polariseren', 'polariseren'], ovt: ['polariseerde', 'polariseerde', 'polariseerde', 'polariseerden', 'polariseerden', 'polariseerden'], vtt_part: 'gepolariseerd', auxiliary: 'hebben', imperative: 'polariseer', level: 'C2', english: 'to polarize' },
+    radicaliseren: { infinitive: 'radicaliseren', ott: ['radicaliseer', 'radicaliseert', 'radicaliseert', 'radicaliseren', 'radicaliseren', 'radicaliseren'], ovt: ['radicaliseerde', 'radicaliseerde', 'radicaliseerde', 'radicaliseerden', 'radicaliseerden', 'radicaliseerden'], vtt_part: 'geradicaliseerd', auxiliary: 'zijn', imperative: 'radicaliseer', level: 'C2', english: 'to radicalize' },
+    reguleren: { infinitive: 'reguleren', ott: ['reguleer', 'reguleert', 'reguleert', 'reguleren', 'reguleren', 'reguleren'], ovt: ['reguleerde', 'reguleerde', 'reguleerde', 'reguleerden', 'reguleerden', 'reguleerden'], vtt_part: 'gereguleerd', auxiliary: 'hebben', imperative: 'reguleer', level: 'C1', english: 'to regulate' },
+    stimuleren: { infinitive: 'stimuleren', ott: ['stimuleer', 'stimuleert', 'stimuleert', 'stimuleren', 'stimuleren', 'stimuleren'], ovt: ['stimuleerde', 'stimuleerde', 'stimuleerde', 'stimuleerden', 'stimuleerden', 'stimuleerden'], vtt_part: 'gestimuleerd', auxiliary: 'hebben', imperative: 'stimuleer', level: 'B2', english: 'to stimulate' },
+    subsidiëren: { infinitive: 'subsidiëren', ott: ['subsidieer', 'subsidieert', 'subsidieert', 'subsidiëren', 'subsidiëren', 'subsidiëren'], ovt: ['subsidieerde', 'subsidieerde', 'subsidieerde', 'subsidieerden', 'subsidieerden', 'subsidieerden'], vtt_part: 'gesubsidieerd', auxiliary: 'hebben', imperative: 'subsidieer', level: 'C1', english: 'to subsidize' },
+    visualiseren: { infinitive: 'visualiseren', ott: ['visualiseer', 'visualiseert', 'visualiseert', 'visualiseren', 'visualiseren', 'visualiseren'], ovt: ['visualiseerde', 'visualiseerde', 'visualiseerde', 'visualiseerden', 'visualiseerden', 'visualiseerden'], vtt_part: 'gevisualiseerd', auxiliary: 'hebben', imperative: 'visualiseer', level: 'B2', english: 'to visualize' },
+    kolonialiseren: { infinitive: 'kolonialiseren', ott: ['kolonialiseer', 'kolonialiseert', 'kolonialiseert', 'kolonialiseren', 'kolonialiseren', 'kolonialiseren'], ovt: ['kolonialiseerde', 'kolonialiseerde', 'kolonialiseerde', 'kolonialiseerden', 'kolonialiseerden', 'kolonialiseerden'], vtt_part: 'gekolonialiseerd', auxiliary: 'hebben', imperative: 'kolonialiseer', level: 'C2', english: 'to colonize' },
+    dekoloniseren: { infinitive: 'dekoloniseren', ott: ['dekoloniseer', 'dekoloniseert', 'dekoloniseert', 'dekoloniseren', 'dekoloniseren', 'dekoloniseren'], ovt: ['dekoloniseerde', 'dekoloniseerde', 'dekoloniseerde', 'dekoloniseerden', 'dekoloniseerden', 'dekoloniseerden'], vtt_part: 'gedekoloniseerd', auxiliary: 'hebben', imperative: 'dekoloniseer', level: 'C2', english: 'to decolonize' },
+    propageren: { infinitive: 'propageren', ott: ['propageer', 'propageert', 'propageert', 'propageren', 'propageren', 'propageren'], ovt: ['propageerde', 'propageerde', 'propageerde', 'propageerden', 'propageerden', 'propageerden'], vtt_part: 'gepropageerd', auxiliary: 'hebben', imperative: 'propageer', level: 'C1', english: 'to propagate' },
+    indoctrineren: { infinitive: 'indoctrineren', ott: ['indoctrineer', 'indoctrineert', 'indoctrineert', 'indoctrineren', 'indoctrineren', 'indoctrineren'], ovt: ['indoctrineerde', 'indoctrineerde', 'indoctrineerde', 'indoctrineerden', 'indoctrineerden', 'indoctrineerden'], vtt_part: 'geïndoctrineerd', auxiliary: 'hebben', imperative: 'indoctrineer', level: 'C2', english: 'to indoctrinate' },
+    infiltreren: { infinitive: 'infiltreren', ott: ['infiltreer', 'infiltreert', 'infiltreert', 'infiltreren', 'infiltreren', 'infiltreren'], ovt: ['infiltreerde', 'infiltreerde', 'infiltreerde', 'infiltreerden', 'infiltreerden', 'infiltreerden'], vtt_part: 'geïnfiltreerd', auxiliary: 'hebben', imperative: 'infiltreer', level: 'C1', english: 'to infiltrate' },
+    saboteren: { infinitive: 'saboteren', ott: ['saboteer', 'saboteert', 'saboteert', 'saboteren', 'saboteren', 'saboteren'], ovt: ['saboteerde', 'saboteerde', 'saboteerde', 'saboteerden', 'saboteerden', 'saboteerden'], vtt_part: 'gesaboteerd', auxiliary: 'hebben', imperative: 'saboteer', level: 'B2', english: 'to sabotage' },
+    spioneren: { infinitive: 'spioneren', ott: ['spioneer', 'spioneert', 'spioneert', 'spioneren', 'spioneren', 'spioneren'], ovt: ['spioneerde', 'spioneerde', 'spioneerde', 'spioneerden', 'spioneerden', 'spioneerden'], vtt_part: 'gespioneerd', auxiliary: 'hebben', imperative: 'spioneer', level: 'B2', english: 'to spy' },
+    smokkelen: { infinitive: 'smokkelen', ott: ['smokkel', 'smokkelt', 'smokkelt', 'smokkelen', 'smokkelen', 'smokkelen'], ovt: ['smokkelde', 'smokkelde', 'smokkelde', 'smokkelden', 'smokkelden', 'smokkelden'], vtt_part: 'gesmokkeld', auxiliary: 'hebben', imperative: 'smokkel', level: 'B2', english: 'to smuggle' },
+    plunderen: { infinitive: 'plunderen', ott: ['plunder', 'plundert', 'plundert', 'plunderen', 'plunderen', 'plunderen'], ovt: ['plunderde', 'plunderde', 'plunderde', 'plunderden', 'plunderden', 'plunderden'], vtt_part: 'geplunderd', auxiliary: 'hebben', imperative: 'plunder', level: 'C1', english: 'to plunder' },
+    confisqueren: { infinitive: 'confisqueren', ott: ['confisqueer', 'confisqueert', 'confisqueert', 'confisqueren', 'confisqueren', 'confisqueren'], ovt: ['confisqueerde', 'confisqueerde', 'confisqueerde', 'confisqueerden', 'confisqueerden', 'confisqueerden'], vtt_part: 'geconfisqueerd', auxiliary: 'hebben', imperative: 'confisqueer', level: 'C1', english: 'to confiscate' }
   },
 
   getStem(infinitive) {
@@ -1423,9 +1592,14 @@ export default function DutchVerbApp() {
   
   // App mode and start screen
   const [showStartScreen, setShowStartScreen] = useState(true);
-  const [practiceMode, setPracticeMode] = useState('single'); // 'single' or 'table'
+  const [practiceMode, setPracticeMode] = useState('single'); // 'single', 'table', 'participle', 'vocabulary'
   const [tableAnswers, setTableAnswers] = useState({});
   const [showVerbLibrary, setShowVerbLibrary] = useState(false);
+  const [hideDutchVerb, setHideDutchVerb] = useState(() => {
+    const saved = localStorage.getItem('hideDutchVerb');
+    return saved === 'true';
+  });
+  const [vocabularyDirection, setVocabularyDirection] = useState('nl-to-en'); // 'nl-to-en' or 'en-to-nl'
   const [darkMode, setDarkMode] = useState(() => {
     // Check localStorage for saved preference, default to false
     const saved = localStorage.getItem('darkMode');
@@ -1464,6 +1638,11 @@ export default function DutchVerbApp() {
       }
     }, 0);
   }, [darkMode]);
+
+  // Save hide Dutch verb preference
+  useEffect(() => {
+    localStorage.setItem('hideDutchVerb', hideDutchVerb.toString());
+  }, [hideDutchVerb]);
 
   // Initialize exercises on mount with level filtering
   useEffect(() => {
@@ -2049,12 +2228,12 @@ export default function DutchVerbApp() {
                 Master Dutch Verbs
               </h1>
               <p className="text-xl text-stone-600 dark:text-stone-400 max-w-2xl mx-auto leading-relaxed">
-                Learn 300+ conjugations across 10 tenses with spaced repetition, grammar insights, and native pronunciation
+                Learn 500+ verbs across 10 tenses with spaced repetition, grammar insights, and native pronunciation
               </p>
             </div>
 
             {/* Mode Selection Cards */}
-            <div className="grid md:grid-cols-3 gap-6 mb-10">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
               
               {/* Single Question Mode */}
               <button
@@ -2126,9 +2305,30 @@ export default function DutchVerbApp() {
                 </div>
                 <h3 className="text-2xl font-bold text-stone-900 dark:text-white mb-3">Participle Practice</h3>
                 <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
-                  Master past participles and auxiliary verb selection with focused drills across all 300+ verbs
+                  Master past participles and auxiliary verb selection with focused drills across all 500+ verbs
                 </p>
                 <div className="flex items-center text-purple-600 dark:text-purple-400 font-semibold">
+                  Start practicing 
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+              </button>
+
+              {/* Vocabulary Mode */}
+              <button
+                onClick={() => {
+                  setPracticeMode('vocabulary');
+                  setShowStartScreen(false);
+                }}
+                className="group bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-emerald-500 dark:hover:border-emerald-400 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
+              >
+                <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  <BookOpen className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-stone-900 dark:text-white mb-3">Vocabulary Practice</h3>
+                <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
+                  Learn verb infinitives by translating between Dutch and English. Build your vocabulary foundation
+                </p>
+                <div className="flex items-center text-emerald-600 dark:text-emerald-400 font-semibold">
                   Start practicing 
                   <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -2213,7 +2413,8 @@ export default function DutchVerbApp() {
                 <p className="text-xs text-stone-500 dark:text-stone-400">
                   {practiceMode === 'single' ? 'Single Question Mode' : 
                    practiceMode === 'table' ? 'Full Table Mode' : 
-                   'Participle Practice Mode'}
+                   practiceMode === 'participle' ? 'Participle Practice Mode' :
+                   'Vocabulary Practice Mode'}
                 </p>
               </div>
             </div>
@@ -2658,14 +2859,28 @@ export default function DutchVerbApp() {
                   className="w-5 h-5 rounded border-stone-300 text-orange-500 focus:ring-orange-500"
                 />
                 <div>
-                  <span className="text-sm font-semibold text-stone-700">Include Irregular Verbs</span>
+                  <span className="text-sm font-semibold text-stone-700 dark:text-stone-300">Include Irregular Verbs</span>
                   <p className="text-xs text-stone-500 dark:text-stone-400">When off, only tests irregular/strong verbs</p>
+                </div>
+              </label>
+              
+              {/* Hide Dutch Verb Toggle */}
+              <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-stone-50 dark:hover:bg-gray-700">
+                <input
+                  type="checkbox"
+                  checked={hideDutchVerb}
+                  onChange={(e) => setHideDutchVerb(e.target.checked)}
+                  className="w-5 h-5 rounded border-stone-300 text-orange-500 focus:ring-orange-500"
+                />
+                <div>
+                  <span className="text-sm font-semibold text-stone-700 dark:text-stone-300">Hide Dutch Verb</span>
+                  <p className="text-xs text-stone-500 dark:text-stone-400">Show only English - test if you remember the Dutch verb</p>
                 </div>
               </label>
             </div>
 
             {/* Active Tenses */}
-            <h3 className="font-semibold text-stone-800 mb-4">Active Tenses</h3>
+            <h3 className="font-semibold text-stone-800 dark:text-stone-100 mb-4">Active Tenses</h3>
             <div className="flex flex-wrap gap-3">
               {Object.entries(tenseLabels).map(([key, label]) => (
                 <label key={key} className="flex items-center gap-2 cursor-pointer">
@@ -3068,11 +3283,25 @@ export default function DutchVerbApp() {
                 <div className="inline-block px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-2xl mb-4">
                   <h3 className="text-lg font-bold">Past Participle Practice</h3>
                 </div>
-                <h2 className="text-5xl font-bold text-stone-800 dark:text-white mb-2 font-serif">{currentExercise.verb}</h2>
-                {getEnglishTranslation(currentExercise.verb) && (
-                  <p className="text-lg text-stone-500 dark:text-stone-400 italic mb-4">({getEnglishTranslation(currentExercise.verb)})</p>
+                {!hideDutchVerb ? (
+                  <>
+                    <h2 className="text-5xl font-bold text-stone-800 dark:text-white mb-2 font-serif">{currentExercise.verb}</h2>
+                    {getEnglishTranslation(currentExercise.verb) && (
+                      <p className="text-lg text-stone-500 dark:text-stone-400 italic mb-4">({getEnglishTranslation(currentExercise.verb)})</p>
+                    )}
+                  </>
+                ) : (
+                  <div className="mb-4">
+                    <div className="inline-block px-6 py-3 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border-2 border-dashed border-purple-300 dark:border-purple-700 mb-3">
+                      <p className="text-sm font-semibold text-purple-700 dark:text-purple-400 uppercase tracking-wide mb-1">Hidden - Remember the verb!</p>
+                      <p className="text-xs text-purple-600 dark:text-purple-500">Verb will be revealed after you answer</p>
+                    </div>
+                    {getEnglishTranslation(currentExercise.verb) && (
+                      <p className="text-lg text-stone-500 dark:text-stone-400 italic">({getEnglishTranslation(currentExercise.verb)})</p>
+                    )}
+                  </div>
                 )}
-                <p className="text-stone-600 dark:text-stone-400">What is the past participle and which auxiliary verb does it use?</p>
+                <p className="text-stone-600 dark:text-stone-400">{hideDutchVerb ? 'What is the past participle of this verb and which auxiliary does it use?' : 'What is the past participle and which auxiliary verb does it use?'}</p>
               </div>
 
               {!showResult ? (
@@ -3412,21 +3641,32 @@ export default function DutchVerbApp() {
 
             {/* Verb */}
             <div className="flex items-center justify-center gap-3 mt-6">
-              <h2 className="text-5xl font-bold text-stone-800 dark:text-white mb-3 font-serif">
-                {currentExercise.verb}
-              </h2>
-              <button
-                onClick={() => speakDutch(currentExercise.verb)}
-                className="p-2 hover:bg-stone-100 dark:hover:bg-gray-700 dark:bg-gray-700 rounded-full transition-colors"
-                title="Pronounce verb"
-              >
-                <Volume2 className="w-6 h-6 text-orange-600" />
-              </button>
+              {!hideDutchVerb ? (
+                <>
+                  <h2 className="text-5xl font-bold text-stone-800 dark:text-white mb-3 font-serif">
+                    {currentExercise.verb}
+                  </h2>
+                  <button
+                    onClick={() => speakDutch(currentExercise.verb)}
+                    className="p-2 hover:bg-stone-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                    title="Pronounce verb"
+                  >
+                    <Volume2 className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                  </button>
+                </>
+              ) : (
+                <div className="text-center">
+                  <div className="px-6 py-3 bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-900/30 dark:to-amber-900/30 rounded-xl border-2 border-dashed border-orange-300 dark:border-orange-700 mb-3">
+                    <p className="text-sm font-semibold text-orange-700 dark:text-orange-400 uppercase tracking-wide mb-1">Hidden - Remember the verb!</p>
+                    <p className="text-xs text-orange-600 dark:text-orange-500">Verb will be revealed after you answer</p>
+                  </div>
+                </div>
+              )}
             </div>
             {getEnglishTranslation(currentExercise.verb) && (
               <p className="text-lg text-stone-500 dark:text-stone-400 italic mb-2">({getEnglishTranslation(currentExercise.verb)})</p>
             )}
-            <p className="text-stone-500 text-lg">Conjugate this verb</p>
+            <p className="text-stone-500 dark:text-stone-400 text-lg">{hideDutchVerb ? 'Conjugate the verb that means this' : 'Conjugate this verb'}</p>
           </div>
 
           {/* Context Sentence */}
@@ -3655,7 +3895,193 @@ export default function DutchVerbApp() {
             </div>
           )}
           </>
-          )}
+          ) : practiceMode === 'vocabulary' ? (
+            /* VOCABULARY MODE - Learn Dutch infinitive verbs */
+            <div className="max-w-2xl mx-auto">
+              <div className="text-center mb-8">
+                <div className="inline-block px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl mb-4">
+                  <h3 className="text-lg font-bold">Vocabulary Practice</h3>
+                </div>
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <button
+                    onClick={() => setVocabularyDirection('nl-to-en')}
+                    className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                      vocabularyDirection === 'nl-to-en'
+                        ? 'bg-emerald-500 text-white shadow-lg scale-105'
+                        : 'bg-stone-100 dark:bg-gray-700 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    NL → EN
+                  </button>
+                  <button
+                    onClick={() => setVocabularyDirection('en-to-nl')}
+                    className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                      vocabularyDirection === 'en-to-nl'
+                        ? 'bg-emerald-500 text-white shadow-lg scale-105'
+                        : 'bg-stone-100 dark:bg-gray-700 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    EN → NL
+                  </button>
+                </div>
+              </div>
+
+              {currentExercise && (
+                <div>
+                  {/* Question */}
+                  <div className="text-center mb-8">
+                    <p className="text-sm text-stone-500 dark:text-stone-400 uppercase tracking-wide mb-3">
+                      {vocabularyDirection === 'nl-to-en' ? 'Translate to English' : 'Translate to Dutch'}
+                    </p>
+                    <div className="flex items-center justify-center gap-4 mb-4">
+                      <h2 className="text-5xl font-bold text-stone-800 dark:text-white font-serif">
+                        {vocabularyDirection === 'nl-to-en' ? currentExercise.verb : getEnglishTranslation(currentExercise.verb)}
+                      </h2>
+                      {vocabularyDirection === 'nl-to-en' && (
+                        <button
+                          onClick={() => speakDutch(currentExercise.verb)}
+                          className="p-2 hover:bg-stone-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                          title="Pronounce Dutch verb"
+                        >
+                          <Volume2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                        </button>
+                      )}
+                    </div>
+                    <p className="text-stone-600 dark:text-stone-400">What does this verb mean?</p>
+                  </div>
+
+                  {/* Answer Input */}
+                  {!showResult ? (
+                    <div className="space-y-4">
+                      <input
+                        type="text"
+                        value={userAnswer}
+                        onChange={(e) => setUserAnswer(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            e.stopPropagation();
+                            const correctAnswer = vocabularyDirection === 'nl-to-en' 
+                              ? getEnglishTranslation(currentExercise.verb)
+                              : currentExercise.verb;
+                            const isCorrect = userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase();
+                            
+                            if (isCorrect) {
+                              playSuccessSound();
+                            } else {
+                              playErrorSound();
+                            }
+                            
+                            setIsCorrect(isCorrect);
+                            setShowResult(true);
+                          }
+                        }}
+                        placeholder="Type your answer..."
+                        className="w-full px-6 py-4 text-xl text-center border-2 border-stone-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg
+                          focus:outline-none focus:border-emerald-400 transition-colors bg-white font-serif"
+                        autoFocus
+                      />
+                      <button
+                        onClick={() => {
+                          const correctAnswer = vocabularyDirection === 'nl-to-en' 
+                            ? getEnglishTranslation(currentExercise.verb)
+                            : currentExercise.verb;
+                          const isCorrect = userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase();
+                          
+                          if (isCorrect) {
+                            playSuccessSound();
+                          } else {
+                            playErrorSound();
+                          }
+                          
+                          setIsCorrect(isCorrect);
+                          setShowResult(true);
+                        }}
+                        disabled={!userAnswer.trim()}
+                        className="w-full py-4 bg-emerald-500 text-white rounded-lg font-semibold
+                          hover:bg-emerald-600 disabled:bg-stone-200 dark:disabled:bg-gray-700 disabled:text-stone-400 
+                          transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Check className="w-5 h-5" />
+                        Check Answer
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      {/* Result */}
+                      <div className={`p-6 rounded-lg mb-6 ${
+                        isCorrect ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800' : 'bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800'
+                      }`}>
+                        <div className="flex items-center gap-3 mb-3">
+                          {isCorrect ? (
+                            <>
+                              <Check className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                              <span className="text-lg font-semibold text-emerald-800 dark:text-emerald-300">Correct!</span>
+                            </>
+                          ) : (
+                            <>
+                              <X className="w-6 h-6 text-rose-600 dark:text-rose-400" />
+                              <span className="text-lg font-semibold text-rose-800 dark:text-rose-300">Not quite</span>
+                            </>
+                          )}
+                        </div>
+                        
+                        {!isCorrect && (
+                          <div className="space-y-2">
+                            <div className="flex items-baseline gap-2">
+                              <span className="text-stone-600 dark:text-stone-400">Your answer:</span>
+                              <span className="font-serif text-lg text-rose-700 dark:text-rose-400 line-through">{userAnswer}</span>
+                            </div>
+                            <div className="flex items-baseline gap-2">
+                              <span className="text-stone-600 dark:text-stone-400">Correct answer:</span>
+                              <span className="font-serif text-lg text-emerald-700 dark:text-emerald-400 font-semibold">
+                                {vocabularyDirection === 'nl-to-en' ? getEnglishTranslation(currentExercise.verb) : currentExercise.verb}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Translation Pair */}
+                      <div className="mb-6 p-6 bg-white dark:bg-gray-800 rounded-lg border border-stone-200 dark:border-gray-700">
+                        <div className="grid grid-cols-2 gap-4 text-center">
+                          <div>
+                            <p className="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">Dutch</p>
+                            <div className="flex items-center justify-center gap-2">
+                              <p className="text-2xl font-bold text-stone-800 dark:text-white font-serif">{currentExercise.verb}</p>
+                              <button
+                                onClick={() => speakDutch(currentExercise.verb)}
+                                className="p-1 hover:bg-stone-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                              >
+                                <Volume2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                              </button>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400 mb-2">English</p>
+                            <p className="text-2xl font-bold text-stone-800 dark:text-white">{getEnglishTranslation(currentExercise.verb)}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          setShowResult(false);
+                          setUserAnswer('');
+                          loadNextExercise();
+                        }}
+                        className="w-full py-4 bg-emerald-500 text-white rounded-lg font-semibold
+                          hover:bg-emerald-600 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Play className="w-5 h-5" />
+                        Next Word
+                        <span className="ml-2 text-xs opacity-70">(Press Enter)</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ) : null}
         </div>
       </div>
       </>
