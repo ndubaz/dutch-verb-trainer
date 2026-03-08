@@ -1525,6 +1525,13 @@ export default function DutchVerbApp() {
     const timeTaken = Date.now() - startTime;
     const correct = userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase();
     
+    // Play sound effect
+    if (correct) {
+      playSuccessSound();
+    } else {
+      playErrorSound();
+    }
+    
     srs.recordResult(currentExercise, correct, timeTaken);
     setIsCorrect(correct);
     setShowResult(true);
@@ -1597,6 +1604,53 @@ export default function DutchVerbApp() {
     }
     
     window.speechSynthesis.speak(utterance);
+  };
+
+  // Play success sound
+  const playSuccessSound = () => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Create a pleasant "ding" sound
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    // Success: pleasant ascending tones
+    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+    
+    oscillator.type = 'sine';
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+  };
+
+  // Play error sound
+  const playErrorSound = () => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Create a gentle "buzz" sound
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    // Error: descending tone
+    oscillator.frequency.setValueAtTime(329.63, audioContext.currentTime); // E4
+    oscillator.frequency.setValueAtTime(261.63, audioContext.currentTime + 0.15); // C4
+    
+    oscillator.type = 'triangle';
+    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
   };
 
   // Load voices when they become available
@@ -2844,6 +2898,14 @@ export default function DutchVerbApp() {
                       const correctAux = verbData.auxiliary;
                       const isCorrect = userAnswer.trim().toLowerCase() === correctPart.toLowerCase() && 
                                       (tableAnswers.auxiliary || '').toLowerCase() === correctAux.toLowerCase();
+                      
+                      // Play sound effect
+                      if (isCorrect) {
+                        playSuccessSound();
+                      } else {
+                        playErrorSound();
+                      }
+                      
                       setIsCorrect(isCorrect);
                       setShowResult(true);
                     }}
@@ -3013,6 +3075,13 @@ export default function DutchVerbApp() {
                   const correctPlural = DutchVerbs.getConjugation(currentExercise.verb, currentExercise.tense, 3);
                   if ((tableAnswers[3] || '').trim().toLowerCase() !== correctPlural.toLowerCase()) {
                     allCorrect = false;
+                  }
+                  
+                  // Play sound effect
+                  if (allCorrect) {
+                    playSuccessSound();
+                  } else {
+                    playErrorSound();
                   }
                   
                   setIsCorrect(allCorrect);
