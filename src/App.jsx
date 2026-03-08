@@ -1572,6 +1572,7 @@ export default function DutchVerbApp() {
   const [startTime, setStartTime] = useState(null);
   const [contextSentence, setContextSentence] = useState(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const inputRef = useRef(null);
   
   // New batch mode states
   const [batchSize, setBatchSize] = useState(null); // null = infinite, or number
@@ -2249,7 +2250,7 @@ export default function DutchVerbApp() {
                 Master Dutch Verbs
               </h1>
               <p className="text-xl text-stone-600 dark:text-stone-400 max-w-2xl mx-auto leading-relaxed">
-                Learn 300+ conjugations across 10 tenses with spaced repetition, grammar insights, and native pronunciation
+                Learn 500 conjugations across 10 tenses with spaced repetition, grammar insights, and native pronunciation
               </p>
             </div>
 
@@ -2400,18 +2401,18 @@ export default function DutchVerbApp() {
               </div>
 
               {/* Quick Stats */}
-              <div className="mt-8 pt-6 border-t border-stone-200 grid grid-cols-3 gap-4 text-center">
+              <div className="mt-8 pt-6 border-t border-stone-200 dark:border-gray-700 grid grid-cols-3 gap-4 text-center">
                 <div>
-                  <div className="text-3xl font-bold text-orange-600">306</div>
-                  <div className="text-xs text-stone-600 mt-1">Verbs</div>
+                  <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">500</div>
+                  <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">Verbs</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-blue-600">10</div>
-                  <div className="text-xs text-stone-600 mt-1">Tenses & Moods</div>
+                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">10</div>
+                  <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">Tenses & Moods</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-purple-600">A1–C2</div>
-                  <div className="text-xs text-stone-600 mt-1">CEFR Levels</div>
+                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">A1–C2</div>
+                  <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">CEFR Levels</div>
                 </div>
               </div>
             </div>
