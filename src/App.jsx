@@ -4304,7 +4304,6 @@ export default function DutchVerbApp() {
               </button>
             </div>
           )}
-          </>
           ) : practiceMode === 'vocabulary' ? (
             /* VOCABULARY MODE - Learn Dutch infinitive verbs */
             <div className="max-w-2xl mx-auto">
