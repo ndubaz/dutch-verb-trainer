@@ -1426,6 +1426,21 @@ export default function DutchVerbApp() {
   const [practiceMode, setPracticeMode] = useState('single'); // 'single' or 'table'
   const [tableAnswers, setTableAnswers] = useState({});
   const [showVerbLibrary, setShowVerbLibrary] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    // Check localStorage for saved preference, default to false
+    const saved = localStorage.getItem('darkMode');
+    return saved === 'true';
+  });
+
+  // Save dark mode preference to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode.toString());
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   // Initialize exercises on mount with level filtering
   useEffect(() => {
@@ -1962,7 +1977,7 @@ export default function DutchVerbApp() {
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
-          <p className="mt-4 text-stone-600">Loading exercises...</p>
+          <p className="mt-4 text-stone-600 dark:text-stone-400">Loading exercises...</p>
         </div>
       </div>
     );
@@ -1976,17 +1991,29 @@ export default function DutchVerbApp() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:wght@600;700;800&display=swap');
-        * { font-family: 'Inter', sans-serif; }
-        h1, h2, h3 { font-family: 'Fraunces', serif; }
-        .font-serif { font-family: 'Fraunces', serif; }
-      `}</style>
-
       {/* Start Screen */}
       {showStartScreen && (
-        <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+        <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
           <div className="max-w-6xl w-full">
+            
+            {/* Dark Mode Toggle - Start Screen */}
+            <div className="absolute top-6 right-6">
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                className="p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all border border-stone-200 dark:border-gray-700"
+                title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              >
+                {darkMode ? (
+                  <svg className="w-6 h-6 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                  </svg>
+                )}
+              </button>
+            </div>
             
             {/* Hero Section */}
             <div className="text-center mb-10">
@@ -1995,10 +2022,10 @@ export default function DutchVerbApp() {
                   <span className="text-4xl font-bold text-white">NL</span>
                 </div>
               </div>
-              <h1 className="text-6xl font-bold text-stone-900 mb-4 leading-tight">
+              <h1 className="text-6xl font-bold text-stone-900 dark:text-stone-100 mb-4 leading-tight">
                 Master Dutch Verbs
               </h1>
-              <p className="text-xl text-stone-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-xl text-stone-600 dark:text-stone-400 max-w-2xl mx-auto leading-relaxed">
                 Learn 300+ conjugations across 10 tenses with spaced repetition, grammar insights, and native pronunciation
               </p>
             </div>
@@ -2017,16 +2044,16 @@ export default function DutchVerbApp() {
                     loadNextExercise();
                   }
                 }}
-                className="group bg-white rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-orange-500 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
+                className="group bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-orange-500 dark:hover:border-orange-400 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
               >
                 <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                   <Play className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-stone-900 mb-3">Single Question</h3>
-                <p className="text-stone-600 leading-relaxed mb-4">
+                <h3 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-3">Single Question</h3>
+                <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
                   Practice one conjugation at a time with instant feedback, context sentences, and detailed grammar explanations
                 </p>
-                <div className="flex items-center text-orange-600 font-semibold">
+                <div className="flex items-center text-orange-600 dark:text-orange-400 font-semibold">
                   Start practicing 
                   <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -2043,16 +2070,16 @@ export default function DutchVerbApp() {
                     loadNextExercise();
                   }
                 }}
-                className="group bg-white rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-blue-500 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
+                className="group bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-blue-500 dark:hover:border-blue-400 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
               >
                 <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                   <BarChart3 className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-stone-900 mb-3">Full Table Mode</h3>
-                <p className="text-stone-600 leading-relaxed mb-4">
+                <h3 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-3">Full Table Mode</h3>
+                <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
                   Fill complete conjugation tables for all 6 persons in one go. Perfect for comprehensive practice
                 </p>
-                <div className="flex items-center text-blue-600 font-semibold">
+                <div className="flex items-center text-blue-600 dark:text-blue-400 font-semibold">
                   Start practicing 
                   <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -2069,16 +2096,16 @@ export default function DutchVerbApp() {
                     loadNextExercise();
                   }
                 }}
-                className="group bg-white rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-purple-500 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
+                className="group bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-purple-500 dark:hover:border-purple-400 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
               >
                 <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                   <Award className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-stone-900 mb-3">Participle Practice</h3>
-                <p className="text-stone-600 leading-relaxed mb-4">
+                <h3 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-3">Participle Practice</h3>
+                <p className="text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
                   Master past participles and auxiliary verb selection with focused drills across all 300+ verbs
                 </p>
-                <div className="flex items-center text-purple-600 font-semibold">
+                <div className="flex items-center text-purple-600 dark:text-purple-400 font-semibold">
                   Start practicing 
                   <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -2086,30 +2113,30 @@ export default function DutchVerbApp() {
             </div>
 
             {/* Feature Highlights */}
-            <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-stone-200">
+            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-3xl p-8 border border-stone-200 dark:border-gray-700">
               <div className="grid md:grid-cols-4 gap-8">
                 <div className="text-center">
                   <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <Target className="w-6 h-6 text-blue-600" />
                   </div>
-                  <h4 className="font-bold text-stone-900 mb-1">Smart Learning</h4>
-                  <p className="text-sm text-stone-600">Spaced repetition focuses on weak areas</p>
+                  <h4 className="font-bold text-stone-900 dark:text-stone-100 mb-1">Smart Learning</h4>
+                  <p className="text-sm text-stone-600 dark:text-stone-400">Spaced repetition focuses on weak areas</p>
                 </div>
                 
                 <div className="text-center">
                   <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <Volume2 className="w-6 h-6 text-purple-600" />
                   </div>
-                  <h4 className="font-bold text-stone-900 mb-1">Native Audio</h4>
-                  <p className="text-sm text-stone-600">AI Dutch pronunciation for every verb</p>
+                  <h4 className="font-bold text-stone-900 dark:text-stone-100 mb-1">Native Audio</h4>
+                  <p className="text-sm text-stone-600 dark:text-stone-400">AI Dutch pronunciation for every verb</p>
                 </div>
 
                 <div className="text-center">
                   <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
                     <BarChart3 className="w-6 h-6 text-emerald-600" />
                   </div>
-                  <h4 className="font-bold text-stone-900 mb-1">Track Progress</h4>
-                  <p className="text-sm text-stone-600">Detailed stats and streak tracking</p>
+                  <h4 className="font-bold text-stone-900 dark:text-stone-100 mb-1">Track Progress</h4>
+                  <p className="text-sm text-stone-600 dark:text-stone-400">Detailed stats and streak tracking</p>
                 </div>
 
                 <div className="text-center">
@@ -2118,8 +2145,8 @@ export default function DutchVerbApp() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                   </div>
-                  <h4 className="font-bold text-stone-900 mb-1">Grammar Rules</h4>
-                  <p className="text-sm text-stone-600">Learn strong verb patterns, not memorization</p>
+                  <h4 className="font-bold text-stone-900 dark:text-stone-100 mb-1">Grammar Rules</h4>
+                  <p className="text-sm text-stone-600 dark:text-stone-400">Learn strong verb patterns, not memorization</p>
                 </div>
               </div>
 
@@ -2148,7 +2175,7 @@ export default function DutchVerbApp() {
       {!showStartScreen && (
         <>
       {/* Header */}
-      <div className="border-b border-stone-200 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+      <div className="border-b border-stone-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -2159,8 +2186,8 @@ export default function DutchVerbApp() {
                 <span className="text-lg font-bold text-white">NL</span>
               </button>
               <div>
-                <h1 className="text-xl font-bold text-stone-800">Dutch Verb Practice</h1>
-                <p className="text-xs text-stone-500">
+                <h1 className="text-xl font-bold text-stone-800 dark:text-stone-100">Dutch Verb Practice</h1>
+                <p className="text-xs text-stone-500 dark:text-stone-400">
                   {practiceMode === 'single' ? 'Single Question Mode' : 
                    practiceMode === 'table' ? 'Full Table Mode' : 
                    'Participle Practice Mode'}
@@ -2169,47 +2196,65 @@ export default function DutchVerbApp() {
             </div>
             <div className="flex items-center gap-2">
               {stats.streak > 0 && (
-                <div className="flex items-center gap-1 px-3 py-1 bg-orange-100 rounded-full">
-                  <Calendar className="w-4 h-4 text-orange-600" />
-                  <span className="text-sm font-semibold text-orange-700">{stats.streak} day streak</span>
+                <div className="flex items-center gap-1 px-3 py-1 bg-orange-100 dark:bg-orange-900/30 rounded-full">
+                  <Calendar className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+                  <span className="text-sm font-semibold text-orange-700 dark:text-orange-300">{stats.streak} day streak</span>
                 </div>
               )}
               <div className="text-right">
-                <div className="text-2xl font-bold text-orange-600">{stats.accuracy}%</div>
-                <div className="text-xs text-stone-500">{stats.correctAnswers}/{stats.totalAttempts}</div>
+                <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{stats.accuracy}%</div>
+                <div className="text-xs text-stone-500 dark:text-stone-400">{stats.correctAnswers}/{stats.totalAttempts}</div>
               </div>
+              
+              {/* Dark Mode Toggle */}
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                className="p-2 hover:bg-stone-100 dark:hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              >
+                {darkMode ? (
+                  <svg className="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                  </svg>
+                )}
+              </button>
+              
               {reviewItems.length > 0 && (
                 <button
                   onClick={() => setShowReview(!showReview)}
-                  className="relative p-2 hover:bg-stone-100 rounded-lg transition-colors"
+                  className="relative p-2 hover:bg-stone-100 dark:hover:bg-gray-700 dark:bg-gray-700 rounded-lg transition-colors"
                   title="Review incorrect answers"
                 >
                   <AlertCircle className="w-5 h-5 text-rose-600" />
-                  <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                  <span className="absolute -top-1 -right-1 bg-rose-50 dark:bg-rose-900/200 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                     {reviewItems.length}
                   </span>
                 </button>
               )}
               <button
                 onClick={() => setShowVerbLibrary(!showVerbLibrary)}
-                className="p-2 hover:bg-stone-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-stone-100 dark:hover:bg-gray-700 dark:bg-gray-700 rounded-lg transition-colors"
                 title="Verb Library"
               >
-                <svg className="w-5 h-5 text-stone-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-stone-600 dark:text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </button>
               <button
                 onClick={() => setShowStats(!showStats)}
-                className="p-2 hover:bg-stone-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-stone-100 dark:hover:bg-gray-700 dark:bg-gray-700 rounded-lg transition-colors"
               >
-                <BarChart3 className="w-5 h-5 text-stone-600" />
+                <BarChart3 className="w-5 h-5 text-stone-600 dark:text-stone-400" />
               </button>
               <button
                 onClick={() => setShowSettings(!showSettings)}
-                className="p-2 hover:bg-stone-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-stone-100 dark:hover:bg-gray-700 dark:bg-gray-700 rounded-lg transition-colors"
               >
-                <Settings className="w-5 h-5 text-stone-600" />
+                <Settings className="w-5 h-5 text-stone-600 dark:text-stone-400" />
               </button>
             </div>
           </div>
@@ -2218,10 +2263,10 @@ export default function DutchVerbApp() {
 
       {/* Stats Dashboard */}
       {showStats && (
-        <div className="border-b border-stone-200 bg-white">
+        <div className="border-b border-stone-200 dark:border-gray-700 bg-white dark:bg-gray-800">
           <div className="max-w-4xl mx-auto px-6 py-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-stone-800">Your Progress</h3>
+              <h3 className="text-lg font-bold text-stone-800 dark:text-stone-100">Your Progress</h3>
               <button
                 onClick={() => {
                   if (srs.resetProgress()) {
@@ -2229,7 +2274,7 @@ export default function DutchVerbApp() {
                     loadNextExercise();
                   }
                 }}
-                className="text-sm text-rose-600 hover:text-rose-700"
+                className="text-sm text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300"
               >
                 Reset Progress
               </button>
@@ -2263,8 +2308,8 @@ export default function DutchVerbApp() {
 
             {/* Session Stats */}
             {(stats.sessionCorrect + stats.sessionIncorrect) > 0 && (
-              <div className="mb-6 p-4 bg-stone-50 rounded-lg border border-stone-200">
-                <div className="text-sm font-semibold text-stone-700 mb-2">This Session</div>
+              <div className="mb-6 p-4 bg-stone-50 dark:bg-gray-900 rounded-lg border border-stone-200 dark:border-gray-700">
+                <div className="text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">This Session</div>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-emerald-600" />
@@ -2288,7 +2333,7 @@ export default function DutchVerbApp() {
                       <div className="w-32 text-sm text-stone-700 font-medium">
                         {tenseLabels[tense]}
                       </div>
-                      <div className="flex-1 h-8 bg-stone-100 rounded-full overflow-hidden">
+                      <div className="flex-1 h-8 bg-stone-100 dark:bg-gray-700 rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-gradient-to-r from-orange-400 to-orange-500 flex items-center justify-end pr-3"
                           style={{ width: `${accuracy}%` }}
@@ -2312,10 +2357,10 @@ export default function DutchVerbApp() {
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {srs.getStrengths().map(({ verb, tense, pronoun, accuracy }, idx) => (
-                    <div key={idx} className="flex items-center gap-2 p-2 bg-emerald-50 rounded border border-emerald-200">
+                    <div key={idx} className="flex items-center gap-2 p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded border border-emerald-200">
                       <Target className="w-4 h-4 text-emerald-600" />
                       <span className="font-serif font-semibold text-emerald-800">{verb}</span>
-                      <span className="text-xs text-stone-600">
+                      <span className="text-xs text-stone-600 dark:text-stone-400">
                         {tenseLabels[tense]} • {pronounLabels[pronoun]}
                       </span>
                       <span className="ml-auto text-emerald-700 font-semibold text-sm">{accuracy}%</span>
@@ -2334,10 +2379,10 @@ export default function DutchVerbApp() {
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {srs.getProblemAreas().slice(0, 6).map(({ verb, tense, count }, idx) => (
-                    <div key={idx} className="flex items-center gap-2 p-2 bg-rose-50 rounded border border-rose-200">
+                    <div key={idx} className="flex items-center gap-2 p-2 bg-rose-50 dark:bg-rose-900/20 rounded border border-rose-200">
                       <AlertCircle className="w-4 h-4 text-rose-600" />
                       <span className="font-serif font-semibold text-rose-800">{verb}</span>
-                      <span className="text-xs text-stone-600">{tenseLabels[tense]}</span>
+                      <span className="text-xs text-stone-600 dark:text-stone-400">{tenseLabels[tense]}</span>
                       <span className="ml-auto text-rose-700 font-semibold text-sm">{count} errors</span>
                     </div>
                   ))}
@@ -2346,7 +2391,7 @@ export default function DutchVerbApp() {
             )}
 
             {stats.totalAttempts === 0 && (
-              <div className="text-center py-8 text-stone-500">
+              <div className="text-center py-8 text-stone-500 dark:text-stone-400">
                 <BarChart3 className="w-12 h-12 mx-auto mb-2 opacity-50" />
                 <p>Complete some exercises to see your progress here</p>
               </div>
@@ -2357,17 +2402,17 @@ export default function DutchVerbApp() {
 
       {/* Settings Panel */}
       {showSettings && (
-        <div className="border-b border-stone-200 bg-white">
+        <div className="border-b border-stone-200 dark:border-gray-700 bg-white dark:bg-gray-800">
           <div className="max-w-4xl mx-auto px-6 py-6">
-            <h3 className="font-semibold text-stone-800 mb-4">Practice Settings</h3>
+            <h3 className="font-semibold text-stone-800 dark:text-stone-100 mb-4">Practice Settings</h3>
             
             {/* CEFR Level Range */}
-            <div className="mb-6 p-4 bg-stone-50 rounded-lg border border-stone-200">
+            <div className="mb-6 p-4 bg-stone-50 dark:bg-gray-900 rounded-lg border border-stone-200 dark:border-gray-700">
               <div className="flex items-center justify-between mb-3">
                 <label className="text-sm font-semibold text-stone-700">Vocabulary Level (CEFR)</label>
-                <div className="flex items-center gap-2 px-3 py-1 bg-white rounded border border-stone-300">
+                <div className="flex items-center gap-2 px-3 py-1 bg-white dark:bg-gray-800 rounded border border-stone-300 dark:border-gray-600">
                   <span className="text-sm font-bold text-orange-600">{levelRange.min}</span>
-                  <span className="text-xs text-stone-500">to</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-400">to</span>
                   <span className="text-sm font-bold text-orange-600">{levelRange.max}</span>
                 </div>
               </div>
@@ -2376,7 +2421,7 @@ export default function DutchVerbApp() {
                 {/* Min Level */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-stone-600">Minimum Level</span>
+                    <span className="text-xs text-stone-600 dark:text-stone-400">Minimum Level</span>
                     <span className="text-xs font-semibold text-stone-700">{levelRange.min}</span>
                   </div>
                   <input
@@ -2409,7 +2454,7 @@ export default function DutchVerbApp() {
                 {/* Max Level */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-stone-600">Maximum Level</span>
+                    <span className="text-xs text-stone-600 dark:text-stone-400">Maximum Level</span>
                     <span className="text-xs font-semibold text-stone-700">{levelRange.max}</span>
                   </div>
                   <input
@@ -2440,7 +2485,7 @@ export default function DutchVerbApp() {
                 </div>
               </div>
               
-              <div className="mt-3 text-xs text-stone-500">
+              <div className="mt-3 text-xs text-stone-500 dark:text-stone-400">
                 <div className="flex items-center gap-1">
                   <span className="font-semibold">{DutchVerbs.getVerbsByLevel(levelRange.min, levelRange.max).length}</span>
                   <span>verbs available in this range</span>
@@ -2449,7 +2494,7 @@ export default function DutchVerbApp() {
             </div>
 
             {/* Batch Mode */}
-            <div className="mb-6 p-4 bg-stone-50 rounded-lg border border-stone-200">
+            <div className="mb-6 p-4 bg-stone-50 dark:bg-gray-900 rounded-lg border border-stone-200 dark:border-gray-700">
               <label className="text-sm font-semibold text-stone-700 mb-3 block">Batch Mode</label>
               <div className="flex flex-wrap gap-2">
                 <button
@@ -2457,7 +2502,7 @@ export default function DutchVerbApp() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     batchSize === null 
                       ? 'bg-orange-500 text-white' 
-                      : 'bg-white text-stone-600 border border-stone-300 hover:bg-stone-50'
+                      : 'bg-white text-stone-600 border border-stone-300 hover:bg-stone-50 dark:bg-gray-900'
                   }`}
                 >
                   Continuous
@@ -2467,7 +2512,7 @@ export default function DutchVerbApp() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     batchSize === 5 
                       ? 'bg-orange-500 text-white' 
-                      : 'bg-white text-stone-600 border border-stone-300 hover:bg-stone-50'
+                      : 'bg-white text-stone-600 border border-stone-300 hover:bg-stone-50 dark:bg-gray-900'
                   }`}
                 >
                   5 Questions
@@ -2477,7 +2522,7 @@ export default function DutchVerbApp() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     batchSize === 10 
                       ? 'bg-orange-500 text-white' 
-                      : 'bg-white text-stone-600 border border-stone-300 hover:bg-stone-50'
+                      : 'bg-white text-stone-600 border border-stone-300 hover:bg-stone-50 dark:bg-gray-900'
                   }`}
                 >
                   10 Questions
@@ -2487,14 +2532,14 @@ export default function DutchVerbApp() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     batchSize === 20 
                       ? 'bg-orange-500 text-white' 
-                      : 'bg-white text-stone-600 border border-stone-300 hover:bg-stone-50'
+                      : 'bg-white text-stone-600 border border-stone-300 hover:bg-stone-50 dark:bg-gray-900'
                   }`}
                 >
                   20 Questions
                 </button>
               </div>
               {batchSize && (
-                <div className="mt-3 text-xs text-stone-600">
+                <div className="mt-3 text-xs text-stone-600 dark:text-stone-400">
                   Progress: {batchProgress.length} / {batchSize}
                 </div>
               )}
@@ -2511,7 +2556,7 @@ export default function DutchVerbApp() {
                 />
                 <div>
                   <span className="text-sm font-semibold text-stone-700">Include Irregular Verbs</span>
-                  <p className="text-xs text-stone-500">When off, only tests irregular/strong verbs</p>
+                  <p className="text-xs text-stone-500 dark:text-stone-400">When off, only tests irregular/strong verbs</p>
                 </div>
               </label>
             </div>
@@ -2563,29 +2608,29 @@ export default function DutchVerbApp() {
       {/* Batch Summary */}
       {showBatchSummary && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <h2 className="text-2xl font-bold text-stone-800 mb-4">Batch Complete!</h2>
               
               {/* Summary Stats */}
               <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 text-center">
+                <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 rounded-lg p-4 text-center">
                   <div className="text-3xl font-bold text-emerald-600">
                     {batchProgress.filter(r => r.correct).length}
                   </div>
-                  <div className="text-sm text-stone-600">Correct</div>
+                  <div className="text-sm text-stone-600 dark:text-stone-400">Correct</div>
                 </div>
-                <div className="bg-rose-50 border border-rose-200 rounded-lg p-4 text-center">
+                <div className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 rounded-lg p-4 text-center">
                   <div className="text-3xl font-bold text-rose-600">
                     {batchProgress.filter(r => !r.correct).length}
                   </div>
-                  <div className="text-sm text-stone-600">Incorrect</div>
+                  <div className="text-sm text-stone-600 dark:text-stone-400">Incorrect</div>
                 </div>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 rounded-lg p-4 text-center">
                   <div className="text-3xl font-bold text-blue-600">
                     {Math.round((batchProgress.filter(r => r.correct).length / batchProgress.length) * 100)}%
                   </div>
-                  <div className="text-sm text-stone-600">Accuracy</div>
+                  <div className="text-sm text-stone-600 dark:text-stone-400">Accuracy</div>
                 </div>
               </div>
 
@@ -2598,24 +2643,24 @@ export default function DutchVerbApp() {
                   </h3>
                   <div className="space-y-3">
                     {batchProgress.filter(r => !r.correct).map((result, idx) => (
-                      <div key={idx} className="bg-rose-50 border border-rose-200 rounded-lg p-4">
+                      <div key={idx} className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="font-serif font-semibold text-stone-800">{result.verb}</span>
+                          <span className="font-serif font-semibold text-stone-800 dark:text-stone-100">{result.verb}</span>
                           <span className={`px-2 py-1 rounded text-xs font-semibold ${tenseColors[result.tense].bg} ${tenseColors[result.tense].text}`}>
                             {tenseLabels[result.tense]}
                           </span>
                         </div>
                         <div className="text-sm space-y-1">
                           <div className="flex items-baseline gap-2">
-                            <span className="text-stone-600">Person:</span>
-                            <span className="text-stone-800">{pronounLabels[result.pronounIndex]}</span>
+                            <span className="text-stone-600 dark:text-stone-400">Person:</span>
+                            <span className="text-stone-800 dark:text-stone-100">{pronounLabels[result.pronounIndex]}</span>
                           </div>
                           <div className="flex items-baseline gap-2">
-                            <span className="text-stone-600">Your answer:</span>
+                            <span className="text-stone-600 dark:text-stone-400">Your answer:</span>
                             <span className="text-rose-700 line-through">{result.userAnswer}</span>
                           </div>
                           <div className="flex items-baseline gap-2">
-                            <span className="text-stone-600">Correct:</span>
+                            <span className="text-stone-600 dark:text-stone-400">Correct:</span>
                             <span className="text-emerald-700 font-semibold">{result.correctAnswer}</span>
                           </div>
                         </div>
@@ -2648,7 +2693,7 @@ export default function DutchVerbApp() {
               </h3>
               <button
                 onClick={() => setReviewItems([])}
-                className="text-sm text-stone-600 hover:text-stone-800"
+                className="text-sm text-stone-600 hover:text-stone-800 dark:text-stone-100"
               >
                 Clear All
               </button>
@@ -2656,24 +2701,24 @@ export default function DutchVerbApp() {
             
             <div className="space-y-3 max-h-96 overflow-y-auto">
               {reviewItems.slice().reverse().map((result, idx) => (
-                <div key={idx} className="bg-rose-50 border border-rose-200 rounded-lg p-4">
+                <div key={idx} className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-serif font-semibold text-stone-800">{result.verb}</span>
+                    <span className="font-serif font-semibold text-stone-800 dark:text-stone-100">{result.verb}</span>
                     <span className={`px-2 py-1 rounded text-xs font-semibold ${tenseColors[result.tense].bg} ${tenseColors[result.tense].text}`}>
                       {tenseLabels[result.tense]}
                     </span>
                   </div>
                   <div className="text-sm space-y-1">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-stone-600">Person:</span>
-                      <span className="text-stone-800">{pronounLabels[result.pronounIndex]}</span>
+                      <span className="text-stone-600 dark:text-stone-400">Person:</span>
+                      <span className="text-stone-800 dark:text-stone-100">{pronounLabels[result.pronounIndex]}</span>
                     </div>
                     <div className="flex items-baseline gap-2">
-                      <span className="text-stone-600">Your answer:</span>
+                      <span className="text-stone-600 dark:text-stone-400">Your answer:</span>
                       <span className="text-rose-700 line-through">{result.userAnswer}</span>
                     </div>
                     <div className="flex items-baseline gap-2">
-                      <span className="text-stone-600">Correct:</span>
+                      <span className="text-stone-600 dark:text-stone-400">Correct:</span>
                       <span className="text-emerald-700 font-semibold">{result.correctAnswer}</span>
                     </div>
                   </div>
@@ -2686,54 +2731,79 @@ export default function DutchVerbApp() {
 
       {/* Verb Library */}
       {showVerbLibrary && (
-        <div className="border-b border-stone-200 bg-white">
+        <div className="border-b border-stone-200 dark:border-gray-700 bg-white dark:bg-gray-800">
           <div className="max-w-6xl mx-auto px-6 py-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-2xl font-bold text-stone-800 mb-1">Verb Library</h2>
-                <p className="text-sm text-stone-600">All {DutchVerbs.getAllVerbs().length} verbs with mastery tracking</p>
+                <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-1">Verb Library</h2>
+                <p className="text-sm text-stone-600 dark:text-stone-400">All {DutchVerbs.getAllVerbs().length} verbs with mastery tracking</p>
               </div>
               <button
                 onClick={() => setShowVerbLibrary(false)}
-                className="p-2 hover:bg-stone-100 rounded-lg"
+                className="p-2 hover:bg-stone-100 dark:hover:bg-gray-700 dark:hover:bg-gray-700 rounded-lg"
               >
-                <X className="w-5 h-5 text-stone-600" />
+                <X className="w-5 h-5 text-stone-600 dark:text-stone-400" />
               </button>
             </div>
 
             {/* Mastery Legend */}
-            <div className="flex flex-wrap gap-3 mb-6 p-4 bg-stone-50 rounded-lg">
+            <div className="flex flex-wrap gap-3 mb-6 p-4 bg-stone-50 dark:bg-gray-900 rounded-lg">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                <span className="text-xs text-stone-700">Mastered (20+ attempts, 90%+)</span>
+                <span className="text-xs text-stone-700 dark:text-stone-300 dark:text-stone-300">Mastered (20+ attempts, 90%+)</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                <span className="text-xs text-stone-700">Proficient (15+ attempts, 80%+)</span>
+                <div className="w-3 h-3 bg-blue-50 dark:bg-blue-900/200 rounded-full"></div>
+                <span className="text-xs text-stone-700 dark:text-stone-300">Proficient (15+ attempts, 80%+)</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
-                <span className="text-xs text-stone-700">Familiar (10+ attempts, 70%+)</span>
+                <span className="text-xs text-stone-700 dark:text-stone-300">Familiar (10+ attempts, 70%+)</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
-                <span className="text-xs text-stone-700">Learning (5+ attempts, 60%+)</span>
+                <div className="w-3 h-3 bg-amber-50 dark:bg-amber-900/200 rounded-full"></div>
+                <span className="text-xs text-stone-700 dark:text-stone-300">Learning (5+ attempts, 60%+)</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                <span className="text-xs text-stone-700">Beginner (1+ attempts)</span>
+                <span className="text-xs text-stone-700 dark:text-stone-300">Beginner (1+ attempts)</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-                <span className="text-xs text-stone-700">Not Practiced</span>
+                <span className="text-xs text-stone-700 dark:text-stone-300">Not Practiced</span>
               </div>
             </div>
 
             {/* Verb Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[600px] overflow-y-auto">
-              {DutchVerbs.getAllVerbs().sort().map(verb => {
+              {DutchVerbs.getAllVerbs()
+                .map(verb => ({
+                  verb,
+                  mastery: getVerbMastery(verb)
+                }))
+                .sort((a, b) => {
+                  // Sort by mastery: Mastered > Proficient > Familiar > Learning > Beginner > Not Practiced
+                  const masteryOrder = {
+                    'Mastered': 6,
+                    'Proficient': 5,
+                    'Familiar': 4,
+                    'Learning': 3,
+                    'Beginner': 2,
+                    'Not Practiced': 1
+                  };
+                  const orderDiff = masteryOrder[b.mastery.level] - masteryOrder[a.mastery.level];
+                  if (orderDiff !== 0) return orderDiff;
+                  
+                  // Within same mastery level, sort by attempts (more practiced first)
+                  if (b.mastery.attempts !== a.mastery.attempts) {
+                    return b.mastery.attempts - a.mastery.attempts;
+                  }
+                  
+                  // Finally, alphabetically
+                  return a.verb.localeCompare(b.verb);
+                })
+                .map(({ verb, mastery }) => {
                 const verbData = DutchVerbs.irregular[verb] || DutchVerbs.conjugateRegular(verb);
-                const mastery = getVerbMastery(verb);
                 const english = getEnglishTranslation(verb);
                 
                 return (
@@ -2764,45 +2834,116 @@ export default function DutchVerbApp() {
                     {/* Mastery Stats */}
                     <div className="space-y-2 text-xs mb-3">
                       <div className="flex justify-between">
-                        <span className="text-stone-600">Mastery:</span>
+                        <span className="text-stone-600 dark:text-stone-400">Mastery:</span>
                         <span className={`font-semibold text-${mastery.color}-700`}>{mastery.level}</span>
                       </div>
                       {mastery.attempts > 0 && (
                         <>
                           <div className="flex justify-between">
-                            <span className="text-stone-600">Attempts:</span>
-                            <span className="text-stone-800">{mastery.attempts}</span>
+                            <span className="text-stone-600 dark:text-stone-400">Attempts:</span>
+                            <span className="text-stone-800 dark:text-stone-100">{mastery.attempts}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-stone-600">Accuracy:</span>
-                            <span className="text-stone-800">{mastery.accuracy}%</span>
+                            <span className="text-stone-600 dark:text-stone-400">Accuracy:</span>
+                            <span className="text-stone-800 dark:text-stone-100">{mastery.accuracy}%</span>
                           </div>
                         </>
                       )}
                     </div>
 
-                    {/* Conjugations */}
+                    {/* Conjugations - Full Tables */}
                     <details className="text-xs">
                       <summary className="cursor-pointer text-orange-600 font-semibold hover:text-orange-700 mb-2">
-                        View conjugations
+                        View all conjugations
                       </summary>
-                      <div className="space-y-1 mt-2 pt-2 border-t border-stone-200">
-                        <div className="grid grid-cols-2 gap-1">
-                          <span className="text-stone-500">Present:</span>
-                          <span className="text-stone-800 font-mono text-xs">{verbData.ott[0]}</span>
+                      <div className="space-y-3 mt-2 pt-2 border-t border-stone-200 max-h-96 overflow-y-auto">
+                        
+                        {/* Present Tense */}
+                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded p-2">
+                          <div className="font-semibold text-blue-800 mb-2">Present (OTT)</div>
+                          <div className="space-y-1">
+                            {pronounLabels.map((pronoun, idx) => (
+                              <div key={idx} className="grid grid-cols-2 gap-1 text-xs">
+                                <span className="text-stone-600 dark:text-stone-400">{pronoun}:</span>
+                                <span className="text-stone-900 font-mono">{verbData.ott[idx]}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-1">
-                          <span className="text-stone-500">Past:</span>
-                          <span className="text-stone-800 font-mono text-xs">{verbData.ovt[0]}</span>
+
+                        {/* Simple Past */}
+                        <div className="bg-purple-50 dark:bg-purple-900/20 rounded p-2">
+                          <div className="font-semibold text-purple-800 mb-2">Simple Past (OVT)</div>
+                          <div className="space-y-1">
+                            {pronounLabels.map((pronoun, idx) => (
+                              <div key={idx} className="grid grid-cols-2 gap-1 text-xs">
+                                <span className="text-stone-600 dark:text-stone-400">{pronoun}:</span>
+                                <span className="text-stone-900 font-mono">{verbData.ovt[idx]}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-1">
-                          <span className="text-stone-500">Participle:</span>
-                          <span className="text-stone-800 font-mono text-xs">{verbData.vtt_part}</span>
+
+                        {/* Present Perfect */}
+                        <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded p-2">
+                          <div className="font-semibold text-emerald-800 mb-2">Present Perfect (VTT)</div>
+                          <div className="space-y-1">
+                            {pronounLabels.map((pronoun, idx) => (
+                              <div key={idx} className="grid grid-cols-2 gap-1 text-xs">
+                                <span className="text-stone-600 dark:text-stone-400">{pronoun}:</span>
+                                <span className="text-stone-900 font-mono">{DutchVerbs.getConjugation(verb, 'vtt', idx)}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-1">
-                          <span className="text-stone-500">Auxiliary:</span>
-                          <span className="text-stone-800 font-mono text-xs">{verbData.auxiliary}</span>
+
+                        {/* Past Perfect */}
+                        <div className="bg-rose-50 dark:bg-rose-900/20 rounded p-2">
+                          <div className="font-semibold text-rose-800 mb-2">Past Perfect (PQP)</div>
+                          <div className="space-y-1">
+                            {pronounLabels.map((pronoun, idx) => (
+                              <div key={idx} className="grid grid-cols-2 gap-1 text-xs">
+                                <span className="text-stone-600 dark:text-stone-400">{pronoun}:</span>
+                                <span className="text-stone-900 font-mono">{DutchVerbs.getConjugation(verb, 'pqp', idx)}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
+
+                        {/* Future */}
+                        <div className="bg-amber-50 dark:bg-amber-900/20 rounded p-2">
+                          <div className="font-semibold text-amber-800 mb-2">Future</div>
+                          <div className="space-y-1">
+                            {pronounLabels.map((pronoun, idx) => (
+                              <div key={idx} className="grid grid-cols-2 gap-1 text-xs">
+                                <span className="text-stone-600 dark:text-stone-400">{pronoun}:</span>
+                                <span className="text-stone-900 font-mono">{DutchVerbs.getConjugation(verb, 'future', idx)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Additional Info */}
+                        <div className="bg-stone-50 dark:bg-gray-900 rounded p-2">
+                          <div className="font-semibold text-stone-800 mb-2">Additional Info</div>
+                          <div className="space-y-1">
+                            <div className="grid grid-cols-2 gap-1 text-xs">
+                              <span className="text-stone-600 dark:text-stone-400">Auxiliary:</span>
+                              <span className="text-stone-900 font-mono">{verbData.auxiliary}</span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-1 text-xs">
+                              <span className="text-stone-600 dark:text-stone-400">Imperative:</span>
+                              <span className="text-stone-900 font-mono">{verbData.imperative}</span>
+                            </div>
+                            {verbData.strongClass && (
+                              <div className="grid grid-cols-2 gap-1 text-xs">
+                                <span className="text-stone-600 dark:text-stone-400">Strong Class:</span>
+                                <span className="text-purple-700 font-semibold">{verbData.strongClass} ({verbData.ablaut})</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
                       </div>
                     </details>
                   </div>
@@ -2814,8 +2955,8 @@ export default function DutchVerbApp() {
       )}
 
       {/* Exercise */}
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="bg-white rounded-xl border border-stone-200 p-8 shadow-lg">
+      <div className="max-w-4xl mx-auto px-6 py-12 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-screen">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-stone-200 dark:border-gray-700 p-8 shadow-lg">
           
           {practiceMode === 'participle' ? (
             /* PARTICIPLE MODE - Learn past participles and auxiliary verbs */
@@ -2828,14 +2969,14 @@ export default function DutchVerbApp() {
                 {getEnglishTranslation(currentExercise.verb) && (
                   <p className="text-lg text-stone-500 italic mb-4">({getEnglishTranslation(currentExercise.verb)})</p>
                 )}
-                <p className="text-stone-600">What is the past participle and which auxiliary verb does it use?</p>
+                <p className="text-stone-600 dark:text-stone-400">What is the past participle and which auxiliary verb does it use?</p>
               </div>
 
               {!showResult ? (
                 <div className="space-y-6 max-w-xl mx-auto">
                   {/* Participle Input */}
                   <div>
-                    <label className="block text-sm font-semibold text-stone-700 mb-2">
+                    <label className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
                       Past Participle (Voltooid Deelwoord)
                     </label>
                     <input
@@ -2864,7 +3005,7 @@ export default function DutchVerbApp() {
 
                   {/* Auxiliary Selection */}
                   <div>
-                    <label className="block text-sm font-semibold text-stone-700 mb-2">
+                    <label className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
                       Auxiliary Verb (Hulpwerkwoord)
                     </label>
                     <div className="grid grid-cols-2 gap-3">
@@ -2872,7 +3013,7 @@ export default function DutchVerbApp() {
                         onClick={() => setTableAnswers({...tableAnswers, auxiliary: 'hebben'})}
                         className={`py-4 rounded-lg font-semibold transition-all border-2 ${
                           tableAnswers.auxiliary === 'hebben'
-                            ? 'bg-purple-500 text-white border-purple-600'
+                            ? 'bg-purple-50 dark:bg-purple-900/200 text-white border-purple-600'
                             : 'bg-white text-stone-700 border-stone-300 hover:border-purple-400'
                         }`}
                       >
@@ -2882,7 +3023,7 @@ export default function DutchVerbApp() {
                         onClick={() => setTableAnswers({...tableAnswers, auxiliary: 'zijn'})}
                         className={`py-4 rounded-lg font-semibold transition-all border-2 ${
                           tableAnswers.auxiliary === 'zijn'
-                            ? 'bg-purple-500 text-white border-purple-600'
+                            ? 'bg-purple-50 dark:bg-purple-900/200 text-white border-purple-600'
                             : 'bg-white text-stone-700 border-stone-300 hover:border-purple-400'
                         }`}
                       >
@@ -2915,7 +3056,7 @@ export default function DutchVerbApp() {
                   </button>
                 </div>
               ) : (
-                <div className={`p-6 rounded-xl max-w-xl mx-auto ${isCorrect ? 'bg-emerald-50 border-2 border-emerald-300' : 'bg-rose-50 border-2 border-rose-300'}`}>
+                <div className={`p-6 rounded-xl max-w-xl mx-auto ${isCorrect ? 'bg-emerald-50 dark:bg-emerald-900/20 border-2 border-emerald-300' : 'bg-rose-50 dark:bg-rose-900/20 border-2 border-rose-300'}`}>
                   <div className="flex items-center gap-3 mb-4">
                     {isCorrect ? (
                       <>
@@ -2932,7 +3073,7 @@ export default function DutchVerbApp() {
 
                   {/* Show Results */}
                   <div className="space-y-3 mb-6">
-                    <div className="bg-white rounded-lg p-4 border border-stone-200">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700">
                       <div className="text-xs text-stone-600 mb-1">Past Participle</div>
                       {!isCorrect && userAnswer.trim() && (
                         <div className="text-rose-600 line-through mb-1">{userAnswer.trim()}</div>
@@ -2945,7 +3086,7 @@ export default function DutchVerbApp() {
                       </div>
                     </div>
 
-                    <div className="bg-white rounded-lg p-4 border border-stone-200">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-stone-200 dark:border-gray-700">
                       <div className="text-xs text-stone-600 mb-1">Auxiliary Verb</div>
                       <div className="text-2xl font-bold text-stone-900">
                         {(() => {
@@ -2965,7 +3106,7 @@ export default function DutchVerbApp() {
                   </div>
 
                   {/* Grammar Explanation */}
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 rounded-lg p-4 mb-4">
                     <h5 className="text-xs font-bold text-blue-800 mb-2">Formation Rule</h5>
                     <p 
                       className="text-sm text-blue-900"
@@ -3021,7 +3162,7 @@ export default function DutchVerbApp() {
               <div className="grid grid-cols-1 gap-3 max-w-xl mx-auto">
                 {/* Singular forms: ik, jij, hij/zij */}
                 {[0, 1, 2].map((idx) => (
-                  <div key={idx} className="flex items-center gap-4 p-4 bg-stone-50 rounded-lg border border-stone-200">
+                  <div key={idx} className="flex items-center gap-4 p-4 bg-stone-50 dark:bg-gray-900 rounded-lg border border-stone-200 dark:border-gray-700">
                     <span className="text-sm font-medium text-stone-600 w-32">{pronounLabels[idx]}</span>
                     <input
                       type="text"
@@ -3035,7 +3176,7 @@ export default function DutchVerbApp() {
                 ))}
                 
                 {/* Plural form - all plural pronouns use the same conjugation */}
-                <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg border-2 border-blue-300">
+                <div className="flex items-center gap-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-2 border-blue-300">
                   <span className="text-sm font-medium text-stone-600 w-32">
                     wij/jullie/zij
                     <div className="text-xs text-stone-500 mt-0.5">(plural)</div>
@@ -3093,7 +3234,7 @@ export default function DutchVerbApp() {
               </button>
 
               {showResult && (
-                <div className={`mt-6 p-6 rounded-lg ${isCorrect ? 'bg-emerald-50' : 'bg-rose-50'}`}>
+                <div className={`mt-6 p-6 rounded-lg ${isCorrect ? 'bg-emerald-50 dark:bg-emerald-900/20' : 'bg-rose-50 dark:bg-rose-900/20'}`}>
                   <h3 className="font-bold text-lg mb-4">{isCorrect ? '✓ Perfect!' : '✗ Some Mistakes'}</h3>
                   
                   {/* Show singular results */}
@@ -3157,11 +3298,11 @@ export default function DutchVerbApp() {
             </div>
 
             {/* Pronoun Badge */}
-            <div className="inline-block px-6 py-3 bg-stone-100 border-2 border-stone-300 rounded-xl ml-4 mb-6">
+            <div className="inline-block px-6 py-3 bg-stone-100 dark:bg-gray-700 border-2 border-stone-300 rounded-xl ml-4 mb-6">
               <div className="text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1">
                 Person
               </div>
-              <div className="text-xl font-bold text-stone-800">
+              <div className="text-xl font-bold text-stone-800 dark:text-stone-100">
                 {pronounLabels[currentExercise.pronounIndex]}
               </div>
             </div>
@@ -3173,7 +3314,7 @@ export default function DutchVerbApp() {
               </h2>
               <button
                 onClick={() => speakDutch(currentExercise.verb)}
-                className="p-2 hover:bg-stone-100 rounded-full transition-colors"
+                className="p-2 hover:bg-stone-100 dark:hover:bg-gray-700 dark:bg-gray-700 rounded-full transition-colors"
                 title="Pronounce verb"
               >
                 <Volume2 className="w-6 h-6 text-orange-600" />
@@ -3190,7 +3331,7 @@ export default function DutchVerbApp() {
             <div className={`mb-8 p-6 rounded-lg border-2 bg-gradient-to-br ${tenseColors[currentExercise.tense].gradient} ${tenseColors[currentExercise.tense].border}`}>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1">
-                  <p className="text-lg text-stone-700 mb-2 font-semibold">
+                  <p className="text-lg text-stone-700 dark:text-stone-300 mb-2 font-semibold">
                     {contextSentence.nl.replace('___', '______')}
                   </p>
                   <p className="text-sm text-stone-600 italic">
@@ -3202,7 +3343,7 @@ export default function DutchVerbApp() {
                   className="p-2 hover:bg-white hover:bg-opacity-50 rounded-full transition-colors flex-shrink-0"
                   title="Pronounce sentence"
                 >
-                  <Volume2 className="w-5 h-5 text-stone-600" />
+                  <Volume2 className="w-5 h-5 text-stone-600 dark:text-stone-400" />
                 </button>
               </div>
             </div>
@@ -3241,7 +3382,7 @@ export default function DutchVerbApp() {
             <div>
               {/* Result */}
               <div className={`p-6 rounded-lg mb-6 ${
-                isCorrect ? 'bg-emerald-50 border border-emerald-200' : 'bg-rose-50 border border-rose-200'
+                isCorrect ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200' : 'bg-rose-50 dark:bg-rose-900/20 border border-rose-200'
               }`}>
                 <div className="flex items-center gap-3 mb-3">
                   {isCorrect ? (
@@ -3263,11 +3404,11 @@ export default function DutchVerbApp() {
                 {!isCorrect && (
                   <div className="space-y-2">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-stone-600">Your answer:</span>
+                      <span className="text-stone-600 dark:text-stone-400">Your answer:</span>
                       <span className="font-serif text-lg text-rose-700 line-through">{userAnswer}</span>
                     </div>
                     <div className="flex items-baseline gap-2">
-                      <span className="text-stone-600">Correct answer:</span>
+                      <span className="text-stone-600 dark:text-stone-400">Correct answer:</span>
                       <span className="font-serif text-lg text-emerald-700 font-semibold">{correctAnswer}</span>
                     </div>
                   </div>
@@ -3297,19 +3438,19 @@ export default function DutchVerbApp() {
               </div>
 
               {/* Full Conjugation Table */}
-              <div className="mt-6 p-5 bg-stone-50 rounded-lg border border-stone-200">
+              <div className="mt-6 p-5 bg-stone-50 dark:bg-gray-900 rounded-lg border border-stone-200 dark:border-gray-700">
                 <h4 className="text-sm font-semibold text-stone-700 mb-3 flex items-center gap-2">
                   <span>Full Conjugation:</span>
-                  <span className="font-serif text-stone-800">{currentExercise.verb}</span>
+                  <span className="font-serif text-stone-800 dark:text-stone-100">{currentExercise.verb}</span>
                   <span className={`px-2 py-1 rounded text-xs ${tenseColors[currentExercise.tense].bg} ${tenseColors[currentExercise.tense].text}`}>
                     {tenseLabels[currentExercise.tense]}
                   </span>
                 </h4>
 
                 {/* Grammar Explanation */}
-                <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 rounded-lg">
                   <div className="flex items-start gap-2">
-                    <div className="bg-blue-500 text-white rounded-full p-1 mt-0.5">
+                    <div className="bg-blue-50 dark:bg-blue-900/200 text-white rounded-full p-1 mt-0.5">
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                       </svg>
@@ -3332,16 +3473,16 @@ export default function DutchVerbApp() {
                   if (verbData?.strongClass) {
                     const classInfo = StrongVerbClasses[verbData.strongClass];
                     return (
-                      <div className="mb-4 p-4 bg-purple-50 border-2 border-purple-300 rounded-lg">
+                      <div className="mb-4 p-4 bg-purple-50 dark:bg-purple-900/20 border-2 border-purple-300 rounded-lg">
                         <div className="flex items-start gap-3">
-                          <div className="bg-purple-500 text-white rounded-lg px-3 py-2 font-bold text-lg">
+                          <div className="bg-purple-50 dark:bg-purple-900/200 text-white rounded-lg px-3 py-2 font-bold text-lg">
                             {verbData.strongClass}
                           </div>
                           <div className="flex-1">
                             <h5 className="text-sm font-bold text-purple-900 mb-1">
                               {classInfo.name}: Strong Verb Pattern
                             </h5>
-                            <div className="bg-white rounded px-3 py-2 mb-2 border border-purple-200">
+                            <div className="bg-white dark:bg-gray-800 rounded px-3 py-2 mb-2 border border-purple-200">
                               <div className="text-lg font-bold text-purple-700 font-mono">
                                 {classInfo.pattern}
                               </div>
@@ -3389,10 +3530,10 @@ export default function DutchVerbApp() {
                         </div>
                         <button
                           onClick={() => speakDutch(fullPhrase)}
-                          className="p-1.5 hover:bg-stone-100 rounded-full transition-colors flex-shrink-0"
+                          className="p-1.5 hover:bg-stone-100 dark:hover:bg-gray-700 dark:bg-gray-700 rounded-full transition-colors flex-shrink-0"
                           title={`Pronounce: ${fullPhrase}`}
                         >
-                          <Volume2 className="w-4 h-4 text-stone-500" />
+                          <Volume2 className="w-4 h-4 text-stone-500 dark:text-stone-400" />
                         </button>
                       </div>
                     );
