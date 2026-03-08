@@ -2264,8 +2264,8 @@ export default function DutchVerbApp() {
                   if (!isInitialized) {
                     initializeExercises();
                     setIsInitialized(true);
-                    loadNextExercise();
                   }
+                  loadNextExercise();
                 }}
                 className="group bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-orange-500 dark:hover:border-orange-400 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
               >
@@ -2290,8 +2290,8 @@ export default function DutchVerbApp() {
                   if (!isInitialized) {
                     initializeExercises();
                     setIsInitialized(true);
-                    loadNextExercise();
                   }
+                  loadNextExercise();
                 }}
                 className="group bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-blue-500 dark:hover:border-blue-400 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
               >
@@ -2316,8 +2316,8 @@ export default function DutchVerbApp() {
                   if (!isInitialized) {
                     initializeExercises();
                     setIsInitialized(true);
-                    loadNextExercise();
                   }
+                  loadNextExercise();
                 }}
                 className="group bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-purple-500 dark:hover:border-purple-400 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
               >
@@ -2338,12 +2338,12 @@ export default function DutchVerbApp() {
               <button
                 onClick={() => {
                   setPracticeMode('vocabulary');
+                  setShowStartScreen(false);
                   if (!isInitialized) {
-                    setShowStartScreen(false);
                     initializeExercises();
                     setIsInitialized(true);
-                    loadNextExercise();
                   }
+                  loadNextExercise();
                 }}
                 className="group bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border-2 border-transparent hover:border-emerald-500 dark:hover:border-emerald-400 transition-all transform hover:scale-105 hover:shadow-2xl text-left"
               >
