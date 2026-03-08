@@ -2,7 +2,7 @@
   "name": "dutch-verb-trainer",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://yourusername.github.io/dutch-verb-trainer",
+  "homepage": "https://ndubaz.github.io/dutch-verb-trainer",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

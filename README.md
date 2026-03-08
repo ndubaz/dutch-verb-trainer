@@ -12,7 +12,7 @@ A sophisticated spaced repetition learning app for mastering Dutch verb conjugat
 
 ## Live Demo
 
-Visit the app at: https://yourusername.github.io/dutch-verb-trainer
+Visit the app at: https://ndubaz.github.io/dutch-verb-trainer
 
 ## Local Development
 
