@@ -1197,6 +1197,7 @@ class SpacedRepetitionSystem {
     this.streakData = { current: 0, best: 0, lastStudyDate: null };
     this.sessionStats = { correct: 0, incorrect: 0, startTime: Date.now() };
     this.lastVerbs = []; // Track last 3 verbs to prevent repeats
+    this.lastTenses = []; // Track last 2 tenses to prevent same tense repeating
     this.loadFromStorage();
   }
 
@@ -1392,6 +1393,13 @@ class SpacedRepetitionSystem {
         score -= (100 / Math.pow(2, recencyIndex));
       }
       
+      // Penalty for recently used tenses (reduce repetition)
+      if (this.lastTenses.includes(ex.tense)) {
+        const tenseRecencyIndex = this.lastTenses.indexOf(ex.tense);
+        // Just shown = index 0: -30, one ago = index 1: -15
+        score -= (30 / Math.pow(2, tenseRecencyIndex));
+      }
+      
       // Add randomization at the end (smaller range to not override penalties)
       score += Math.random() * 5;
       
@@ -1405,6 +1413,12 @@ class SpacedRepetitionSystem {
     this.lastVerbs.unshift(selected.verb); // Add to front
     if (this.lastVerbs.length > 3) {
       this.lastVerbs.pop(); // Keep only last 3
+    }
+    
+    // Update last tenses tracker
+    this.lastTenses.unshift(selected.tense);
+    if (this.lastTenses.length > 2) {
+      this.lastTenses.pop(); // Keep only last 2
     }
     
     return selected;
@@ -1658,14 +1672,18 @@ export default function DutchVerbApp() {
   // Handle Enter key for advancing to next exercise when results are shown
   useEffect(() => {
     const handleKeyPress = (e) => {
-      if (e.key === 'Enter' && showResult && currentExercise) {
-        loadNextExercise();
+      if (e.key === 'Enter') {
+        if (showBatchSummary) {
+          handleContinueAfterBatch();
+        } else if (showResult && currentExercise) {
+          loadNextExercise();
+        }
       }
     };
 
     window.addEventListener('keypress', handleKeyPress);
     return () => window.removeEventListener('keypress', handleKeyPress);
-  }, [showResult, currentExercise]);
+  }, [showResult, currentExercise, showBatchSummary]);
 
   const initializeExercises = () => {
     let verbs = DutchVerbs.getVerbsByLevel(levelRange.min, levelRange.max);
@@ -1787,17 +1805,17 @@ export default function DutchVerbApp() {
   };
 
   const fillContextSentence = (sentence, answer, tense) => {
-    // For compound tenses (vtt, pqp), the answer contains both auxiliary and participle
+    // For compound tenses, the answer contains multiple parts (auxiliary + participle(s))
     // e.g., "heb gehad" but the sentence structure is "Ik ___ tijd gehad"
     // We need to only put the auxiliary in the blank, the participle is already in the sentence
-    if (tense === 'vtt' || tense === 'pqp') {
-      const parts = answer.split(' ');
-      if (parts.length === 2) {
+    if (tense === 'vtt' || tense === 'pqp' || tense === 'conditional_perfect' || tense === 'future_perfect') {
+      const parts = answer.trim().split(' ');
+      if (parts.length >= 2) {
         // Only fill in the auxiliary verb (first part)
         return sentence.replace('___', parts[0]);
       }
     }
-    // For simple tenses and future, just replace normally
+    // For simple tenses and future/conditional, just replace normally
     return sentence.replace('___', answer);
   };
 
@@ -1921,6 +1939,15 @@ export default function DutchVerbApp() {
     };
     
     return commonTranslations[verb] || '';
+  };
+
+  // Helper: For compound tenses in context sentences, extract just the auxiliary
+  const getContextAnswer = (fullAnswer, tense) => {
+    if (tense === 'vtt' || tense === 'pqp' || tense === 'conditional_perfect' || tense === 'future_perfect') {
+      // These tenses return "auxiliary + participle", but context sentence only needs auxiliary
+      return fullAnswer.split(' ')[0]; // Return just first word (auxiliary)
+    }
+    return fullAnswer;
   };
 
   const getVerbMastery = (verb) => {
@@ -3022,9 +3049,11 @@ export default function DutchVerbApp() {
               {/* Continue Button */}
               <button
                 onClick={handleContinueAfterBatch}
-                className="w-full py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+                className="w-full py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
               >
                 Continue Practicing
+                <span className="text-xs opacity-70">(Press Enter)</span>
+              </button>
               </button>
             </div>
           </div>
@@ -3161,11 +3190,18 @@ export default function DutchVerbApp() {
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-serif font-bold text-lg text-stone-900">{verb}</h3>
-                          <div className={`w-2 h-2 rounded-full bg-${mastery.color}-500`}></div>
+                          <h3 className="font-serif font-bold text-lg text-stone-900 dark:text-white">{verb}</h3>
+                          <div className={`w-2 h-2 rounded-full ${
+                            mastery.color === 'emerald' ? 'bg-emerald-500' :
+                            mastery.color === 'blue' ? 'bg-blue-500' :
+                            mastery.color === 'cyan' ? 'bg-cyan-500' :
+                            mastery.color === 'amber' ? 'bg-amber-500' :
+                            mastery.color === 'orange' ? 'bg-orange-500' :
+                            'bg-gray-300'
+                          }`}></div>
                         </div>
                         {english && (
-                          <p className="text-xs text-stone-500 italic">{english}</p>
+                          <p className="text-xs text-stone-500 dark:text-stone-400 italic">{english}</p>
                         )}
                       </div>
                       <div className={`px-2 py-1 rounded text-xs font-semibold ${
@@ -3184,7 +3220,14 @@ export default function DutchVerbApp() {
                     <div className="space-y-2 text-xs mb-3">
                       <div className="flex justify-between">
                         <span className="text-stone-600 dark:text-stone-400">Mastery:</span>
-                        <span className={`font-semibold text-${mastery.color}-700`}>{mastery.level}</span>
+                        <span className={`font-semibold ${
+                          mastery.color === 'emerald' ? 'text-emerald-700 dark:text-emerald-400' :
+                          mastery.color === 'blue' ? 'text-blue-700 dark:text-blue-400' :
+                          mastery.color === 'cyan' ? 'text-cyan-700 dark:text-cyan-400' :
+                          mastery.color === 'amber' ? 'text-amber-700 dark:text-amber-400' :
+                          mastery.color === 'orange' ? 'text-orange-700 dark:text-orange-400' :
+                          'text-gray-700 dark:text-gray-400'
+                        }`}>{mastery.level}</span>
                       </div>
                       {mastery.attempts > 0 && (
                         <>
@@ -3883,7 +3926,7 @@ export default function DutchVerbApp() {
                   </p>
                 </div>
                 <button
-                  onClick={() => speakDutch(contextSentence.nl.replace('___', correctAnswer))}
+                  onClick={() => speakDutch(contextSentence.nl.replace('___', getContextAnswer(correctAnswer, currentExercise.tense)))}
                   className="p-2 hover:bg-white hover:bg-opacity-50 rounded-full transition-colors flex-shrink-0"
                   title="Pronounce sentence"
                 >
